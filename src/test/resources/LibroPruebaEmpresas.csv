@@ -1,0 +1,19 @@
+Año;TipoCuenta;Cuenta;Empresa
+2017;EBITDA;35000;miEmpresa
+2017;FDS;158960;miEmpresa
+2016;FDS;144000;miEmpresa
+2015;EBITDA;120000;miEmpresa
+2015;Free Clash Flow;150000;miEmpresa
+2014;EBITDA;260000;miEmpresa
+2014;FDS;360000;miEmpresa
+2016;EBITDA;150000;EmpresaLoca
+2016;FDS;160000;EmpresaLoca
+2015;Free Cash Flow;250000;EmpresaLoca
+2014;Free Cash Flow;380000;EmpresaLoca
+2014;EBITDA;300000;EmpresaLoca
+2014;FDS;220000;EmpresaLoca
+2013;FDS;160000;EmpresaLoca
+2013;Free Cash Flow;100000;EmpresaLoca
+2017;FDS;200000;EmpresaReLoca
+2017;EBITDA;180000;EmpresaReLoca
+2016;FDS;270000;EmpresaReLoca

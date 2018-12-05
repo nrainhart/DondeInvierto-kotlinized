@@ -1,0 +1,65 @@
+{{#partial "contenido"}}
+
+<script>
+
+function myFunction() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    td1 = tr[i].getElementsByTagName("td")[1];
+    td2 = tr[i].getElementsByTagName("td")[2];
+    if (td || td1 || td2) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1 || td1.innerHTML.toUpperCase().indexOf(filter) > -1 || td2.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
+
+</script>
+
+<h3 style="font-family:verdana;">Cuentas</h3>
+<br>
+<p>
+<input type="text" onkeyup="myFunction()" placeholder="Search for.." id="myInput" style=" 
+    background-image: url('searchicon.png') !important;
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px; 
+    border: 1px solid #ddd; 
+    margin-bottom: 12px; "/>
+</p>
+
+<table class="table table-hover sortable" id="myTable">
+	<thead class="thead-default">
+		<tr>
+			<th>Anio<i class="fa fa-fw fa-sort"></i></th>
+			<th>Nombre<i class="fa fa-fw fa-sort"></i></th>
+			<th>Valor<i class="fa fa-fw fa-sort"></i></th>
+		</tr>
+ </thead>
+
+	{{#each cuentas}}
+		<tr>
+			<td>{{anio}}</td>
+			<td>{{tipoCuenta}}</td>
+			<td>{{valor}}</td>
+		</tr>
+	{{/each}}
+</table>
+<br>
+
+{{/partial}}
+
+{{>layout.hbs}}

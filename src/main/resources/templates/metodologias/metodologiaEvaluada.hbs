@@ -1,0 +1,52 @@
+{{#partial "contenido"}}
+
+<h2 style="font-family:verdana;">{{nombreMetodologia}}</h2>
+
+<table class="table table-hover">
+	
+	<thead class="thead-default">
+		<tr>
+			<th>Empresas ordenadas</th>
+		</tr>
+ 	</thead>
+ 	
+	{{#each empresasOrdenadas}}
+		<tr>
+			<td>{{this}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+<table class="table table-hover">
+	
+	<thead class="thead-default">	
+		<tr>
+			<th>Empresas que no cumplen condiciones taxativas</th>
+		</tr>
+	</thead>
+	
+	{{#each empresasQueNoCumplen}}
+		<tr>
+			<td>{{this}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+<table class="table table-hover">
+
+	<thead class="thead-default">
+		<tr>
+			<th>Empresas con datos faltantes</th>
+		</tr>
+	</thead>
+	
+	{{#each empresasSinDatos}}
+		<tr>
+			<td>{{this}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+{{/partial}}
+
+{{>layout.hbs}}

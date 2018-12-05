@@ -1,0 +1,104 @@
+options
+{
+STATIC = false ;
+}
+PARSER_BEGIN(ParserIndicadores)
+
+package javaCC;
+
+import java.util.function.IntBinaryOperator;
+import dominio.*;
+
+public class ParserIndicadores {
+	public static Indicador parse(String strExpresion) {
+    	Indicador indicador = null;
+        try {
+          indicador = new ParserIndicadores(new java.io.StringReader(strExpresion)).Start();
+        } catch (Throwable e) {
+          throw new ParserError("Sintaxis incorrecta");
+        }
+		return indicador;
+    }
+}
+
+PARSER_END(ParserIndicadores)
+
+SKIP: { " " | "\t" | "\n" | "\r" }
+TOKEN: {
+    "(" | ")" | <SUMAORESTA: ["+","-"]> | <MULTODIV: ["*","/"]> | "="
+    | <NUM: (["0"-"9"])+> | <IND: (["A"-"Z"])+> | <CTA: (["a"-"z"])+>
+}
+
+Indicador Start():
+{
+	Token token;
+	Indicador indicador;
+	Expresion expresion;
+}
+{
+	token=<IND>
+	{ indicador = new Indicador(token.image); }
+	"="
+	expresion=Expresion()
+	{ indicador.setExpresion(expresion); }
+	<EOF>
+	{ return indicador; }
+}
+      
+Expresion Expresion():
+{
+	Expresion primerExpresion;
+	Expresion segundaExpresion;
+	Token tokOperacion;
+	/*IntBinaryOperator*/String operadorBinario;
+	ExpresionBuilder expresionBuilder = new ExpresionBuilder();
+}
+{
+	primerExpresion=T()
+	{ expresionBuilder.agregarExpresion(primerExpresion); }
+	(
+		tokOperacion=<SUMAORESTA>
+		{ operadorBinario = tokOperacion.image; } //En realidad le tendría que pasar un lamda a IntBinaryOperator!!
+		segundaExpresion=T()
+		{ expresionBuilder.agregarOperacion(segundaExpresion, operadorBinario); }
+	)*
+	{ return expresionBuilder.build(); }
+}
+
+Expresion T():
+{
+	Expresion primerExpresion;
+	Expresion segundaExpresion;
+	Token tokOperacion;
+	/*IntBinaryOperator*/String operadorBinario;
+	ExpresionBuilder expresionBuilder = new ExpresionBuilder();
+}
+{
+	primerExpresion=F()
+	{ expresionBuilder.agregarExpresion(primerExpresion); }
+	(
+		tokOperacion=<MULTODIV>
+		{ operadorBinario = tokOperacion.image; } //En realidad le tendría que pasar un lamda a IntBinaryOperator!!
+		segundaExpresion=F()
+		{ expresionBuilder.agregarOperacion(segundaExpresion, operadorBinario); }
+	)*
+	{ return expresionBuilder.build(); }
+}
+
+Expresion F():
+{
+	Token tok;
+	Expresion expresion;
+}
+{
+	tok=<NUM>{return new ExpresionValor(Integer.parseInt(tok.image));} | 
+	tok=<IND>{return new ExpresionIndicador(tok.image);} |
+	tok= <CTA>{return new ExpresionCuenta(tok.image);} |
+	"(" expresion=Expresion(){return expresion;} ")"
+}
+/*
+void S(): {} { <IND> "=" E() <EOF> }
+void E(): {} { T() (<SUMAORESTA> T())* }
+void T(): {} { F() (<MULTODIV> F())* }
+void F(): {} { <NUM> | <IND> | <CTA> | "(" E() ")" }
+*/

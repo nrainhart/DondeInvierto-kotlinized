@@ -1,0 +1,145 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>DondeInvierto</groupId>
+  <artifactId>DondeInvierto</artifactId>
+  <version>1-SNAPSHOT</version>
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-bom</artifactId>
+      <version>1.11.246</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+<dependencies>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+	
+      <dependency>
+      	<groupId>org.apache.poi</groupId>
+      	<artifactId>poi</artifactId>
+      	<version>3.16</version>
+      </dependency>
+
+      <dependency>
+      	<groupId>com.opencsv</groupId>
+      	<artifactId>opencsv</artifactId>
+      	<version>3.8</version>
+      </dependency>
+      
+      <dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-simple</artifactId>
+		<version>1.7.21</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.sparkjava</groupId>
+	  	<artifactId>spark-core</artifactId>
+	  	<version>2.5</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.sparkjava</groupId>
+	  	<artifactId>spark-template-handlebars</artifactId>
+	  	<version>2.3</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.sparkjava</groupId>
+	  	<artifactId>spark-debug-tools</artifactId>
+	  	<version>0.5</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.github.jknack</groupId>
+	  	<artifactId>handlebars-helpers</artifactId>
+	  	<version>4.0.6</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.github.jknack</groupId>
+	  	<artifactId>handlebars-humanize</artifactId>
+	  	<version>4.0.6</version>
+	  </dependency>
+      
+	  <dependency>
+		<groupId>org.quartz-scheduler</groupId>
+		<artifactId>quartz</artifactId>
+		<version>2.1.5</version>
+	  </dependency>
+	  
+	  <dependency>
+	  	<groupId>com.amazonaws</groupId>
+    	<artifactId>aws-java-sdk-s3</artifactId>
+  	  </dependency>
+	  
+      <!-- JPA Persistence Dependencies -->
+      <dependency>
+      	<groupId>org.uqbar-project</groupId>
+      	<artifactId>jpa-java8-extras</artifactId>
+		<version>1.0-alpha-1</version>
+      </dependency>
+      
+      <!-- driver jdbc -->
+      <dependency>
+      	<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.26</version>
+      </dependency>
+      
+      <dependency>
+      	<groupId>org.hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>2.2.8</version>
+      </dependency>
+
+</dependencies>
+
+  <build>
+    <plugins>
+      
+      <plugin>
+	    <artifactId>maven-assembly-plugin</artifactId>
+	    <executions>
+	      <execution>
+	        <phase>package</phase>
+	        <goals>
+	          <goal>single</goal>
+	        </goals>
+	      </execution>
+	    </executions>
+	    <configuration>
+	      <archive>
+	        <manifest>
+	          <addClasspath>true</addClasspath>
+	          <mainClass>server.Server</mainClass>
+	        </manifest>
+	      </archive>
+	      <descriptorRefs>
+	        <descriptorRef>jar-with-dependencies</descriptorRef>
+	      </descriptorRefs>
+	    </configuration>
+	  </plugin> 
+	  
+	  <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
+</project>

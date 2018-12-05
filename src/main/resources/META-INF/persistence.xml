@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" 
+    version="2.0"> 
+  
+    <persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
+     <provider>org.hibernate.ejb.HibernatePersistence</provider>
+     
+     <!-- CLASES A PERSISTIR-->
+     <class>dominio.empresas.Empresa</class>
+     <class>dominio.empresas.Cuenta</class>
+     <class>dominio.EntradaRegistroModificacionesListener</class>
+     <class>dominio.indicadores.Indicador</class>
+     <class>dominio.indicadores.IndicadorPrecalculado</class>
+     <class>dominio.indicadores.RepositorioIndicadores</class>
+     <class>dominio.metodologias.Metodologia</class>
+     <class>dominio.metodologias.CondicionPrioritaria</class>
+     <class>dominio.metodologias.CondicionTaxativa</class>
+     <class>dominio.metodologias.Condicion</class>
+     <class>dominio.metodologias.OperandoCondicion</class>
+     <class>dominio.metodologias.Cuantificador</class>
+     <class>dominio.metodologias.Antiguedad</class>
+     <class>dominio.metodologias.RepositorioMetodologias</class>
+     <class>dominio.usuarios.Usuario</class>
+     <class>dominio.AbstractLocalRepository</class>
+      
+        <properties> 
+     <property name="hibernate.archive.autodetection" value="class"/>        
+         
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" /> 
+            <property name="hibernate.connection.url" value="jdbc:mysql://us-cdbr-iron-east-05.cleardb.net/heroku_35f471e2bde836f?reconnect=true"/>
+			<property name="hibernate.connection.username" value="b2db980f74caa3"/>
+			<property name="hibernate.connection.password" value="9e4396dc"/>
+
+			<!-- <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/donde_invierto_bd" />
+ 			<property name="hibernate.connection.username" value="root" />
+  			<property name="hibernate.connection.password" value="cinturon1" /> -->
+                            
+            <property name="hibernate.show_sql" value="true" /> 
+            <property name="hibernate.format_sql" value="true" /> 
+            <property name="use_sql_comments" value="true" /> 
+            <property name="hibernate.hbm2ddl.auto" value="update" /> 
+        </properties>
+          
+    </persistence-unit> 
+  
+</persistence>

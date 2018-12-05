@@ -1,0 +1,28 @@
+{{#partial "contenido"}}
+
+<h1 style="font-family:verdana;">Indicadores</h1>
+<br>
+
+<table class="table table-hover sortable">
+	<thead class="thead-default">
+		<tr>
+			<th>Indicador<i class="fa fa-fw fa-sort"></i></th>
+			<th></th>
+		</tr>
+ </thead>
+
+	{{#each indicadores}}
+		<tr>
+			<td>{{equivalencia}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+     <a href="/indicadores/new"><button class="btn btn-primary btn-lg" style="float: right;">Crear indicador</button></a>
+
+<br>
+
+{{/partial}}
+
+{{>layout.hbs}}
+
