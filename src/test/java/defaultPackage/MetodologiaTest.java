@@ -28,7 +28,8 @@ public class MetodologiaTest {
 	private Metodologia metodologiaDeWarren;
 	private Metodologia metodologiaDeMike;
 	private Metodologia metodologiaDeSteve;
-	
+	private int anioActual = 2017;
+
 	@Before
 	public void setUp() {
 		ArchivoXLS archivoEjemploIndicadores = new ArchivoXLS("src/test/resources/EjemploIndicadores.xls");
@@ -56,7 +57,6 @@ public class MetodologiaTest {
 		CondicionPrioritaria condPriorSteve = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Variacion,saldoCrudo,2), OperacionRelacional.Mayor);
 		metodologiaDeSteve.agregarCondicionTaxativa(condTaxSteve);
 		metodologiaDeSteve.agregarCondicionPrioritaria(condPriorSteve);
-		//Ver formas de testear métodos que usan fecha actual (!!!)
 	}
 
 	private Indicador parsear(String expresion) {
@@ -65,235 +65,235 @@ public class MetodologiaTest {
 
 	@Test
 	public void SonyEsMasAntiguaQueApple() {
-		assertTrue(new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Mayor).esMejorQue(Sony, Apple));
+		assertTrue(new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Mayor).esMejorQue(Sony, Apple, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxAntiguedadMenorA10() {
-		assertTrue(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Menor, 10).laCumple(Sony));
+		assertTrue(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Menor, 10).laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void AppleNoCumpleCondTaxAntiguedadMayorA3() {
-		assertFalse(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Mayor, 3).laCumple(Apple));
+		assertFalse(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Mayor, 3).laCumple(Apple, anioActual));
 	}
 	
 	@Test
 	public void AppleCumpleCondTaxAntiguedadIgualA1(){
-		assertTrue(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Igual, 1).laCumple(Apple));
+		assertTrue(new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Igual, 1).laCumple(Apple, anioActual));
 	}
 	
 	@Test
 	public void AppleNOCumpleCondTaxIndicadorSaldoCrudoMayorA360000() {
 		OperandoCondicion operando = new OperandoCondicion(OperacionAgregacion.Ultimo,saldoCrudo,1);
 		CondicionTaxativa cond = new CondicionTaxativa(operando, OperacionRelacional.Mayor, 360000);
-		assertFalse(cond.laCumple(Apple));
+		assertFalse(cond.laCumple(Apple, anioActual));
 	}
 	
 	@Test
 	public void AppleNOCumpleCondTaxIndicadorSaldoCrudoMenorA200000(){
 		OperandoCondicion operando = new OperandoCondicion(OperacionAgregacion.Ultimo,saldoCrudo,1);
 		CondicionTaxativa cond = new CondicionTaxativa(operando, OperacionRelacional.Menor, 200000);
-		assertFalse(cond.laCumple(Apple));
+		assertFalse(cond.laCumple(Apple, anioActual));
 	}
 	
 	@Test
 	public void AppleCumpleCondTaxIndicadorSaldoCrudoIgualA30000(){
 		OperandoCondicion operando = new OperandoCondicion(OperacionAgregacion.Ultimo,saldoCrudo,1);
 		CondicionTaxativa cond = new CondicionTaxativa(operando, OperacionRelacional.Igual, 300000);
-		assertTrue(cond.laCumple(Apple));
+		assertTrue(cond.laCumple(Apple, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOMayorA20000EnUltimoAnio() {
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo,ingresoNeto,1), OperacionRelacional.Mayor, 20000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOMenorA8000EnUltimoAnio(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo,ingresoNeto,1), OperacionRelacional.Menor, 8000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOIgualA17000EnUltimoAnio(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo,ingresoNeto,1), OperacionRelacional.Igual, 17000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConSumatoriaMayorA30000EnUltimosDosAnios() {
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Sumatoria,ingresoNeto,2), OperacionRelacional.Mayor, 30000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConSumatoriaMenorA15000EnUltimosDosAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Sumatoria,ingresoNeto,2), OperacionRelacional.Menor, 15000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConSumatoriaIgualA28000EnUltimosDosAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Sumatoria,ingresoNeto,2), OperacionRelacional.Igual, 28000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConPromedioMayorA15000EnUltimosDosAnios() {
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,2), OperacionRelacional.Mayor, 15000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConPromedioMenorA10000EnUltimosDosAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,2), OperacionRelacional.Menor, 10000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConPromedioIgualA14000EnUltimosDosAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,2), OperacionRelacional.Igual, 14000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConPromedioMayorA10000EnUltimosCuatroAnios() {
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,4), OperacionRelacional.Mayor, 10000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConPromedioMenorA8000EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,4), OperacionRelacional.Menor, 8000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConPromedioIgualA9500EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,4), OperacionRelacional.Igual, 9500);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConMedianaMayorA15000EnUltimosTresAnios() { // Mediana con n impar
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,3), OperacionRelacional.Mayor, 15000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConMedianaMenorA10000EnUltimosTresAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,3), OperacionRelacional.Menor, 10000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConMedianaIgualA11000EnUltimosTresAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,3), OperacionRelacional.Igual, 11000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConMedianaMayorA10000EnUltimosCuatroAnios() { // Mediana con n impar
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,4), OperacionRelacional.Mayor, 10000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConMedianaMenorA7000EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,4), OperacionRelacional.Menor, 7000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConMedianaIgualA9000EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Mediana,ingresoNeto,4), OperacionRelacional.Igual, 9000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConVariacionMayorA15000EnUltimosCuatroAnios() { // Mediana con n impar
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,4), OperacionRelacional.Mayor, 15000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyNOCumpleCondTaxIndicadorINGRESONETOConVariacionMenorA13000EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,4), OperacionRelacional.Menor, 13000);
-		assertFalse(cond.laCumple(Sony));
+		assertFalse(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test
 	public void SonyCumpleCondTaxIndicadorINGRESONETOConVariacionIgualA14000EnUltimosCuatroAnios(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,4), OperacionRelacional.Igual, 14000);
-		assertTrue(cond.laCumple(Sony));
+		assertTrue(cond.laCumple(Sony, anioActual));
 	}
 	
 	@Test(expected = NoExisteCuentaError.class)
 	public void AppleLanzaErrorAlQuererCumplirCondTaxIndicadorINGRESONETOConVariacionIgualA14000EnUltimosTresAniosPorFaltaDeCuentas(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,3), OperacionRelacional.Igual, 14000);
-		cond.laCumple(Apple);
+		cond.laCumple(Apple, anioActual);
 	}
 	
 	@Test(expected = NoExisteCuentaError.class)
 	public void SonyLanzaErrorAlQuererCumplirCondTaxIndicadorINGRESONETOConSumatoriaIgualA14000EnUltimosCincoAniosPorFaltaDeCuentas(){
 		CondicionTaxativa cond = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,5), OperacionRelacional.Igual, 50000);
-		cond.laCumple(Sony);
+		cond.laCumple(Sony, anioActual);
 	}
 	
 	@Test
 	public void SonyEsMejorQueAppleConINGRESONETOEnUltimoAnio(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo,ingresoNeto,1), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Sony, Apple));
+		assertTrue(cond.esMejorQue(Sony, Apple, anioActual));
 	}
 	
 	@Test
 	public void FalabellaEsMejorQueDeloitteConSaldoCrudoConSumatoriaEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Sumatoria,saldoCrudo,1), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Falabella, Deloitte));
+		assertTrue(cond.esMejorQue(Falabella, Deloitte, anioActual));
 	}
 	
 	@Test
 	public void FalabellaEsMejorQueDeloitteConSaldoCrudoConPromedioEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Promedio,saldoCrudo,1), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Falabella, Deloitte));
+		assertTrue(cond.esMejorQue(Falabella, Deloitte, anioActual));
 	}
 	
 	@Test
 	public void FalabellaEsMejorQueDelloiteYDelloiteEsMejorQueIBMConSaldoCrudoConPromedioEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Promedio,saldoCrudo,1), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Falabella, Deloitte) && cond.esMejorQue(Deloitte, IBM));
+		assertTrue(cond.esMejorQue(Falabella, Deloitte, anioActual) && cond.esMejorQue(Deloitte, IBM, anioActual));
 	}
 	
 	@Test
 	public void DeloitteEsMejorQueFalabellaYFalabellaEsMejorQueIBMConINGRESONETOConSumatoriaEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Sumatoria,ingresoNeto,1), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Deloitte, Falabella) && cond.esMejorQue(Falabella, IBM));
+		assertTrue(cond.esMejorQue(Deloitte, Falabella, anioActual) && cond.esMejorQue(Falabella, IBM, anioActual));
 	}
 	
 	@Test
 	public void DeloitteEsMejorQueFalabellaYFalabellaEsMejorQueIBMConINGRESONETOConVariacionEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,2), OperacionRelacional.Mayor);
-		assertTrue(cond.esMejorQue(Deloitte, Falabella) && cond.esMejorQue(Falabella, IBM));
+		assertTrue(cond.esMejorQue(Deloitte, Falabella, anioActual) && cond.esMejorQue(Falabella, IBM, anioActual));
 	}
 	
 	@Test
 	public void DeloitteEsMejorQueFalabellaYFalabellaEsMejorQueIBMConINGRESONETOConVariacionConsiderandoLaMenorEnUltimosDosAnios(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Variacion,ingresoNeto,2), OperacionRelacional.Menor);
-		assertTrue(cond.esMejorQue(IBM, Falabella) && cond.esMejorQue(Falabella, Deloitte));
+		assertTrue(cond.esMejorQue(IBM, Falabella, anioActual) && cond.esMejorQue(Falabella, Deloitte, anioActual));
 	}
 	
 	@Test(expected = NoExisteCuentaError.class)
 	public void hayErrorAlQuererCompararSonyConGooglePorINGRESONETOConSumatoriaEnUltimosTresAniosPorFaltaDeCuentas(){
 		CondicionPrioritaria cond = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Sumatoria,ingresoNeto,3), OperacionRelacional.Mayor);
-		cond.esMejorQue(Sony, Google);
+		cond.esMejorQue(Sony, Google, anioActual);
 	}
 	
 
 	@Test
 	public void soloDosEmpresasCumplenMetodologiaDeWarren(){
-		assertEquals(2,metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias).size());
+		assertEquals(2,metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
@@ -301,42 +301,42 @@ public class MetodologiaTest {
 		List<Empresa> empresas = new ArrayList<Empresa>();
 		empresas.add(Deloitte);
 		empresas.add(Falabella);
-		assertTrue(metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias).containsAll(empresas));
+		assertTrue(metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias, anioActual).containsAll(empresas));
 	}
 	
 	@Test
 	public void lasEmpresasQueCumplenMetodologiaDeWarrenSonOrdenadasCorrectamente(){
-		assertTrue(metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias).get(0)==Deloitte && metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias).get(1)==Falabella);
+		assertTrue(metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(0)==Deloitte && metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(1)==Falabella);
 	}
 	
 	@Test
 	public void soloUnaEmpresaNoCumpleMetodologiaDeWarren(){
-		assertEquals(1,metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias).size());
+		assertEquals(1,metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
 	public void soloIBMNOCumpleMetodologiaDeWarren(){
-		assertTrue(metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias).get(0)==IBM);
+		assertTrue(metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias, anioActual).get(0)==IBM);
 	}
 	
 	@Test
 	public void soloUnaEmpresaCumpleMetodologiaDeMike(){
-		assertEquals(1,metodologiaDeMike.evaluarPara(empresasParaComparacionConMetodologias).size());
+		assertEquals(1,metodologiaDeMike.evaluarPara(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
 	public void soloDeloitteCumpleMetodologiaDeMike(){
-		assertTrue(metodologiaDeMike.evaluarPara(empresasParaComparacionConMetodologias).stream().anyMatch(emp -> emp == Deloitte));
+		assertTrue(metodologiaDeMike.evaluarPara(empresasParaComparacionConMetodologias, anioActual).stream().anyMatch(emp -> emp == Deloitte));
 	}
 	
 	@Test
 	public void ningunaEmpresaNOCumpleMetodologiaDeMike(){
-		assertEquals(0,metodologiaDeMike.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias).size());
+		assertEquals(0,metodologiaDeMike.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
 	public void soloDosEmpresasNOtienenDatosSuficientesParaMetodologiaDeMike(){
-		assertEquals(2,metodologiaDeMike.empresasConDatosFaltantes(empresasParaComparacionConMetodologias).size());
+		assertEquals(2,metodologiaDeMike.empresasConDatosFaltantes(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
@@ -344,17 +344,17 @@ public class MetodologiaTest {
 		List<Empresa> empresas = new ArrayList<Empresa>();
 		empresas.add(IBM);
 		empresas.add(Falabella);
-		assertTrue(metodologiaDeMike.empresasConDatosFaltantes(empresasParaComparacionConMetodologias).containsAll(empresas));
+		assertTrue(metodologiaDeMike.empresasConDatosFaltantes(empresasParaComparacionConMetodologias, anioActual).containsAll(empresas));
 	}
 	
 	@Test
 	public void soloDosEmpresasSeAplicaCorrectamenteMetodologiaDeSteve(){
-		assertEquals(2,metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias).size());
+		assertEquals(2,metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias, anioActual).size());
 	}
 	
 	@Test
 	public void seAplicaCorrectamenteMetodologiaDeSteveDevolviendoEnCorrectoOrdenADeloitteYFalabella(){
-		assertTrue(metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias).get(0)==Falabella && metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias).get(1)==Deloitte);
+		assertTrue(metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(0)==Falabella && metodologiaDeSteve.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(1)==Deloitte);
 	}
 	
 	@Test
@@ -365,7 +365,7 @@ public class MetodologiaTest {
 		CondicionPrioritaria condPrior = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo,prueba,1), OperacionRelacional.Mayor);
 		metodologia.agregarCondicionTaxativa(condTax);
 		metodologia.agregarCondicionPrioritaria(condPrior);
-		assertTrue(metodologia.evaluarPara(empresasParaComparacionConMetodologias).get(0)==Falabella && metodologia.evaluarPara(empresasParaComparacionConMetodologias).get(1)==Deloitte);
+		assertTrue(metodologia.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(0)==Falabella && metodologia.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(1)==Deloitte);
 	}
 
 	

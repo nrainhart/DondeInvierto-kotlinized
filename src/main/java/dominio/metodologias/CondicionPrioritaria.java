@@ -16,8 +16,8 @@ public class CondicionPrioritaria extends Condicion{
 		this.operacionRelacional = operacionRelacional;
 	}
 	
-	public boolean esMejorQue(Empresa empresa1, Empresa empresa2){
-		return operacionRelacional.aplicarA(operando.valorPara(empresa1), operando.valorPara(empresa2));
+	public boolean esMejorQue(Empresa empresa1, Empresa empresa2, int anioActual){
+		return operacionRelacional.aplicarA(operando.valorPara(empresa1, anioActual), operando.valorPara(empresa2, anioActual));
 	}
 	
 }

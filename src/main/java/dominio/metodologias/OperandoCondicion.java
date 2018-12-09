@@ -5,7 +5,6 @@ import excepciones.AntiguedadMenorACeroError;
 import excepciones.NoExisteCuentaError;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.stream.IntStream;
 
@@ -34,17 +33,16 @@ public class OperandoCondicion {
 		}
 	}
 	
-	public boolean sePuedeEvaluarPara(Empresa empresa){
+	public boolean sePuedeEvaluarPara(Empresa empresa, int anioActual){
 		try{
-			this.valorPara(empresa);
+			this.valorPara(empresa, anioActual);
 			return true;
 		} catch (NoExisteCuentaError | AntiguedadMenorACeroError e) {
 			return false;
 		}
 	}
 	
-	public int valorPara(Empresa empresa){
-		int anioActual = LocalDate.now().getYear();
+	public int valorPara(Empresa empresa, int anioActual){
 		IntStream periodoAEvaluar = IntStream.rangeClosed(anioActual - aniosAEvaluar, anioActual);
 		IntStream indicesEnPeriodo = periodoAEvaluar.map(anio -> indicadorOAntiguedad.evaluarEn(empresa, Year.of(anio)));
 		return operacionAgregacion.aplicarA(indicesEnPeriodo);
