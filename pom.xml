@@ -136,7 +136,8 @@
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
                     <compilerPlugins>
-                        <plugin>jpa</plugin>
+                        <plugin>jpa</plugin> <!-- add noarg constructors -->
+                        <plugin>spring</plugin> <!-- make classes used by spring not final -->
                     </compilerPlugins>
                 </configuration>
 
