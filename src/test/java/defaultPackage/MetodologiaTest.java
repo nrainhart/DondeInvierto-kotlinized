@@ -3,26 +3,20 @@ package defaultPackage;
 import dominio.empresas.ArchivoXLS;
 import dominio.empresas.Empresa;
 import dominio.indicadores.Indicador;
-import dominio.indicadores.RepositorioIndicadores;
 import dominio.metodologias.*;
+import dominio.parser.ParserIndicadores;
 import excepciones.NoExisteCuentaError;
 import org.junit.Before;
 import org.junit.Test;
-import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
-import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class MetodologiaTest extends AbstractPersistenceTest implements WithGlobalEntityManager{
-	
-	private ArrayList<Indicador> indicadores = new ArrayList<Indicador>();
-	private List<Empresa> empresasParaIndicadores;
+public class MetodologiaTest {
+
 	private List<Empresa> empresasParaComparacionConMetodologias;
-	private RepositorioIndicadores repositorioIndicadores = new RepositorioIndicadores();
 	private Empresa Sony;
 	private Empresa Google;
 	private Empresa Apple;
@@ -41,24 +35,16 @@ public class MetodologiaTest extends AbstractPersistenceTest implements WithGlob
 		ArchivoXLS archivoEjemploMetodologias = new ArchivoXLS("src/test/resources/EjemploMetodologias.xls");
 		archivoEjemploIndicadores.leerEmpresas();
 		archivoEjemploMetodologias.leerEmpresas();
-		empresasParaIndicadores = archivoEjemploIndicadores.getEmpresas();
+		List<Empresa> empresasParaIndicadores = archivoEjemploIndicadores.getEmpresas();
 		empresasParaComparacionConMetodologias = archivoEjemploMetodologias.getEmpresas();
-		withTransaction(() -> {
-			repositorioIndicadores.agregarMultiplesIndicadores(Arrays.asList(new String[] { 
-					"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
-					"SALDOCRUDO = cuentarara + fds",
-					"INDICADORTRES = INGRESONETO * 10 + ebitda",
-					"A = 5 / 3", "PRUEBA = ebitda + 5" }));
-		});
-		indicadores.addAll(repositorioIndicadores.obtenerTodos());
 		Sony = empresasParaIndicadores.get(0);
 		Google = empresasParaIndicadores.get(1);
 		Apple = empresasParaIndicadores.get(2);
 		Deloitte = empresasParaComparacionConMetodologias.get(0);
 		IBM = empresasParaComparacionConMetodologias.get(1);
 		Falabella = empresasParaComparacionConMetodologias.get(2);
-		ingresoNeto = repositorioIndicadores.buscarIndicador("ingresoNeto");
-		saldoCrudo = repositorioIndicadores.buscarIndicador("saldoCrudo");
+		ingresoNeto = parsear("INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas");
+		saldoCrudo = parsear("SALDOCRUDO = cuentarara + fds");
 		metodologiaDeWarren = new Metodologia("Warren");
 		CondicionTaxativa condWarren = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Promedio,ingresoNeto,2), OperacionRelacional.Mayor, 10000);
 		metodologiaDeWarren.agregarCondicionTaxativa(condWarren);
@@ -72,7 +58,11 @@ public class MetodologiaTest extends AbstractPersistenceTest implements WithGlob
 		metodologiaDeSteve.agregarCondicionPrioritaria(condPriorSteve);
 		//Ver formas de testear métodos que usan fecha actual (!!!)
 	}
-	
+
+	private Indicador parsear(String expresion) {
+		return ParserIndicadores.parse(expresion);
+	}
+
 	@Test
 	public void SonyEsMasAntiguaQueApple() {
 		assertTrue(new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo, new Antiguedad(), 1), OperacionRelacional.Mayor).esMejorQue(Sony, Apple));
@@ -369,7 +359,7 @@ public class MetodologiaTest extends AbstractPersistenceTest implements WithGlob
 	
 	@Test
 	public void seAplicaCorrectamenteUnaMetodologiaConCondTaxPRUEBAConUltimoMayorA0YConCondPriorPRUEBAConUltimoAmbosEnUltimoAnioDevolviendoEnCorrectoOrdenAFalabellaYDeloitte(){
-		Indicador prueba = repositorioIndicadores.buscarIndicador("prueba");
+		Indicador prueba = parsear("PRUEBA = ebitda + 5");
 		Metodologia metodologia = new Metodologia("Una Metodologia");
 		CondicionTaxativa condTax = new CondicionTaxativa(new OperandoCondicion(OperacionAgregacion.Ultimo,prueba,1), OperacionRelacional.Mayor, 0);
 		CondicionPrioritaria condPrior = new CondicionPrioritaria(new OperandoCondicion(OperacionAgregacion.Ultimo,prueba,1), OperacionRelacional.Mayor);
