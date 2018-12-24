@@ -10,28 +10,21 @@ import java.util.HashSet
 
 @Entity
 @Table(name = "empresas")
-class Empresa {
+class Empresa(val nombre: String,
+              @OneToMany(cascade = [CascadeType.PERSIST])
+              @JoinColumn(name = "empresa_id")
+              private val cuentas: MutableList<Cuenta>
+) {
 
     @Id
     @GeneratedValue
     val id: Long? = null
-
-    val nombre: String
-
-    @OneToMany(cascade = [CascadeType.PERSIST])
-    @JoinColumn(name = "empresa_id")
-    private val cuentas: MutableList<Cuenta>
 
     val anioDeCreacion: Int //El anio de creación se obtiene a partir de la cuenta más antigua
         get() = cuentas.stream()
                 .mapToInt { cuenta -> Integer.parseInt(cuenta.anio.toString()) }
                 .min()
                 .orElseThrow { NoExisteCuentaError("La empresa no tiene ninguna cuenta, por lo que no se puede calcular el año de creación.") }
-
-    constructor(nombre: String, cuentas: MutableList<Cuenta>) {
-        this.nombre = nombre
-        this.cuentas = cuentas
-    }
 
     fun cantidadDeCuentas(): Int {
         return cuentas.size
