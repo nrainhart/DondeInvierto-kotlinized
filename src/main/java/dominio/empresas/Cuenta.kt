@@ -9,24 +9,16 @@ import java.util.Objects
 
 @Entity
 @Table(name = "cuentas")
-class Cuenta {
+class Cuenta(val anio: Year, val tipoCuenta: String, valor: Int) {
 
     @Id
     @GeneratedValue
     private val id: Long? = null
 
-    val anio: Year
-    val tipoCuenta: String
-    var valor: Int = 0
+    var valor: Int = valor
         private set
 
-    constructor(anio: Year, tipoCuenta: String, valor: Int) {
-        this.anio = anio
-        this.tipoCuenta = tipoCuenta
-        this.valor = valor
-    }
-
-    fun actualizar(cuentaConDatosNuevos: Cuenta, empresaQueContieneCuenta: Empresa) {
+    fun actualizar(cuentaConDatosNuevos: Cuenta) {
         valor = cuentaConDatosNuevos.valor
     }
 
@@ -38,9 +30,10 @@ class Cuenta {
         return this.anio == anio
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return (obj is Cuenta && anio == obj.anio
-                && tipoCuenta == obj.tipoCuenta)
+    override fun equals(other: Any?): Boolean {
+        return other is Cuenta &&
+                anio == other.anio &&
+                tipoCuenta == other.tipoCuenta
     }
 
     override fun hashCode(): Int {

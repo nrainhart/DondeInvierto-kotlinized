@@ -7,7 +7,6 @@ import javax.persistence.*
 import java.time.Year
 import java.util.ArrayList
 import java.util.HashSet
-import java.util.stream.Collectors
 
 @Entity
 @Table(name = "empresas")
@@ -52,7 +51,7 @@ class Empresa {
                 registrarCuenta(cuenta)
             else {
                 val cuentaAActualizar = cuentas[cuentas.indexOf(cuenta)]
-                cuentaAActualizar.actualizar(cuenta, this)
+                cuentaAActualizar.actualizar(cuenta)
             }
         }
     }
