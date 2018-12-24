@@ -15,7 +15,7 @@ public class Antiguedad extends Cuantificador {
 
 	@Override
 	public int evaluarEn(Empresa empresa, Year anio) {
-		int antiguedad = Integer.parseInt(anio.toString()) - empresa.getAnioDeCreacion();
+		int antiguedad = Integer.parseInt(anio.toString()) - Integer.parseInt(empresa.anioDeCreacion().toString());
 		if (antiguedad < 0) {
 			throw new AntiguedadMenorACeroError("La empresa " + empresa.getNombre() + " no existía en el año " + anio);
 		}

@@ -20,11 +20,9 @@ class Empresa(val nombre: String,
     @GeneratedValue
     val id: Long? = null
 
-    val anioDeCreacion: Int //El anio de creación se obtiene a partir de la cuenta más antigua
-        get() = cuentas.stream()
-                .mapToInt { cuenta -> Integer.parseInt(cuenta.anio.toString()) }
+    fun anioDeCreacion(): Year = cuentas.map { it.anio }
                 .min()
-                .orElseThrow { NoExisteCuentaError("La empresa no tiene ninguna cuenta, por lo que no se puede calcular el año de creación.") }
+                ?: throw NoExisteCuentaError("La empresa no tiene ninguna cuenta, por lo que no se puede calcular el año de creación.")
 
     fun cantidadDeCuentas(): Int {
         return cuentas.size
