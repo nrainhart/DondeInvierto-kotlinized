@@ -24,13 +24,9 @@ class Empresa(val nombre: String,
                 .min()
                 ?: throw NoExisteCuentaError("La empresa no tiene ninguna cuenta, por lo que no se puede calcular el año de creación.")
 
-    fun cantidadDeCuentas(): Int {
-        return cuentas.size
-    }
+    fun cantidadDeCuentas(): Int = cuentas.size
 
-    fun seLlama(nombre: String): Boolean {
-        return this.nombre == nombre
-    }
+    fun seLlama(nombre: String): Boolean = this.nombre == nombre
 
     fun registrarCuenta(cuenta: Cuenta) {
         cuentas.add(cuenta)
@@ -69,9 +65,7 @@ class Empresa(val nombre: String,
         return resultados
     }
 
-    fun getCuentas(): List<Cuenta> {
-        return cuentas
-    }
+    fun getCuentas(): List<Cuenta> = cuentas
 
     fun getValorCuenta(tipoCuenta: String, anio: Year): Int {
         val cuentaBuscada = cuentas.stream()
@@ -82,16 +76,10 @@ class Empresa(val nombre: String,
         return cuentaBuscada.valor
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is Empresa && this.seLlama(other.nombre)
-    }
+    override fun equals(other: Any?): Boolean = other is Empresa && this.seLlama(other.nombre)
 
-    override fun hashCode(): Int {
-        return nombre.hashCode()
-    }
+    override fun hashCode(): Int = nombre.hashCode()
 
-    override fun toString(): String { //Es necesario para que el Selector muestre solo el nombre de la empresa
-        return nombre
-    }
+    override fun toString(): String = nombre //Es necesario para que el Selector muestre solo el nombre de la empresa
 
 }

@@ -22,13 +22,9 @@ class Cuenta(val anio: Year, val tipoCuenta: String, valor: Int) {
         valor = cuentaConDatosNuevos.valor
     }
 
-    fun esDeTipo(tipo: String): Boolean {
-        return this.tipoCuenta.equals(tipo, ignoreCase = true)
-    }
+    fun esDeTipo(tipo: String): Boolean = this.tipoCuenta.equals(tipo, ignoreCase = true)
 
-    fun esDeAnio(anio: Year): Boolean {
-        return this.anio == anio
-    }
+    fun esDeAnio(anio: Year): Boolean = this.anio == anio
 
     override fun equals(other: Any?): Boolean {
         return other is Cuenta &&
@@ -36,8 +32,6 @@ class Cuenta(val anio: Year, val tipoCuenta: String, valor: Int) {
                 tipoCuenta == other.tipoCuenta
     }
 
-    override fun hashCode(): Int {
-        return Objects.hash(anio, tipoCuenta)
-    }
+    override fun hashCode(): Int = Objects.hash(anio, tipoCuenta)
 
 }
