@@ -2,11 +2,8 @@ package dominio.empresas
 
 import dominio.indicadores.Indicador
 import excepciones.NoExisteCuentaError
-
-import javax.persistence.*
 import java.time.Year
-import java.util.ArrayList
-import java.util.HashSet
+import javax.persistence.*
 
 @Entity
 @Table(name = "empresas")
@@ -20,9 +17,11 @@ class Empresa(val nombre: String,
     @GeneratedValue
     val id: Long? = null
 
-    fun anioDeCreacion(): Year = cuentas.map { it.anio }
+    fun anioDeCreacion(): Year {
+        return cuentas.map { it.anio }
                 .min()
                 ?: throw NoExisteCuentaError("La empresa no tiene ninguna cuenta, por lo que no se puede calcular el año de creación.")
+    }
 
     fun cantidadDeCuentas(): Int = cuentas.size
 
@@ -44,36 +43,27 @@ class Empresa(val nombre: String,
     }
 
     fun aniosDeLosQueTieneCuentas(): Set<Year> {
-        val anios = HashSet<Year>()
-        cuentas.forEach { cuenta -> anios.add(cuenta.anio) }
-        return anios
+        return cuentas.map { it.anio }
+                .toSet()
     }
 
     fun resultadosParaEstosIndicadores(indicadores: List<Indicador>): List<Cuenta> {
-        val anios = this.aniosDeLosQueTieneCuentas()
-        val resultadosTotales = ArrayList<Cuenta>()
-        anios.forEach { anio -> resultadosTotales.addAll(this.resultadosParaEstosIndicadoresSegunAnio(indicadores, anio)) }
-        return resultadosTotales
+        return aniosDeLosQueTieneCuentas().flatMap { anio -> resultadosParaEstosIndicadoresSegunAnio(indicadores, anio) }
     }
 
     private fun resultadosParaEstosIndicadoresSegunAnio(indicadores: List<Indicador>, anio: Year): List<Cuenta> {
-        val resultados = ArrayList<Cuenta>()
-        val indicadoresAplicables = indicadores.filter { ind -> ind.esAplicableA(this, anio) }
-        indicadoresAplicables.forEach { ind -> resultados.add(
-                Cuenta(anio, ind.nombre, ind.evaluarEn(this, anio))
-        ) }
-        return resultados
+        return indicadores.filter { it.esAplicableA(this, anio) }
+                .map { indicador -> Cuenta(anio, indicador.nombre, indicador.evaluarEn(this, anio)) }
+        // TODO no se debería representar el resultado de evaluar un Indicador con una Cuenta
     }
 
     fun getCuentas(): List<Cuenta> = cuentas
 
     fun getValorCuenta(tipoCuenta: String, anio: Year): Int {
-        val cuentaBuscada = cuentas.stream()
-                .filter { cuenta -> cuenta.esDeTipo(tipoCuenta) && cuenta.esDeAnio(anio) }
-                .findFirst()
-                .orElseThrow { NoExisteCuentaError("No se pudo encontrar la cuenta " + tipoCuenta + " en el año " + anio + " para la empresa " + this.nombre + ".") }
-        //El findFirst podría enmascarar el caso erróneo en el que haya dos cuentas del mismo tipo con valores distintos en el mismo año
-        return cuentaBuscada.valor
+        return cuentas.firstOrNull { cuenta -> cuenta.esDeTipo(tipoCuenta) && cuenta.esDeAnio(anio) }
+                //El first podría enmascarar el caso erróneo en el que haya dos cuentas del mismo tipo con valores distintos en el mismo año
+                ?.valor
+                ?: throw NoExisteCuentaError("No se pudo encontrar la cuenta " + tipoCuenta + " en el año " + anio + " para la empresa " + this.nombre + ".")
     }
 
     override fun equals(other: Any?): Boolean = other is Empresa && this.seLlama(other.nombre)
