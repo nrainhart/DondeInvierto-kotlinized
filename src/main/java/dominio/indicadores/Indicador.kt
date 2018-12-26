@@ -51,11 +51,9 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
     }
 
     private fun obtenerResultadoPara(empresa: Empresa, anio: Year): Int {
-        val indPrecalculado = resultados.stream()
-                .filter { indPreCalc -> indPreCalc.esDe(empresa, anio) }
-                .findFirst()
-                .orElseThrow { NoExisteElResultadoBuscadoError("No pudo encontrarse el resultado para " + empresa.nombre + " en " + anio) }
-        return indPrecalculado.valor
+        return resultados.firstOrNull { it.esDe(empresa, anio) }
+                ?.valor
+                ?: throw NoExisteElResultadoBuscadoError("No pudo encontrarse el resultado para " + empresa.nombre + " en " + anio)
     }
 
     private fun guardarResultado(indPrecalculado: IndicadorPrecalculado) {
@@ -68,33 +66,23 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
         withTransaction { setResultados(resultados) }
     }
 
-    fun seLlama(nombre: String): Boolean {
-        return this.nombre.equals(nombre, ignoreCase = true)
-    }
+    fun seLlama(nombre: String): Boolean = this.nombre.equals(nombre, ignoreCase = true)
 
     private fun inicializarExpresion() {
         val indicador = ParserIndicadores.parse(this.equivalencia)
         expresion = indicador.expresion
     }
 
-    fun getResultados(): List<IndicadorPrecalculado>? {
-        return resultados
-    }
+    fun getResultados(): List<IndicadorPrecalculado>? = resultados
 
     private fun setResultados(resultados: MutableList<IndicadorPrecalculado>) {
         this.resultados = resultados
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is Indicador && this.seLlama(other.nombre)
-    }
+    override fun equals(other: Any?): Boolean = other is Indicador && this.seLlama(other.nombre)
 
-    override fun hashCode(): Int {
-        return nombre.hashCode()
-    }
+    override fun hashCode(): Int = nombre.hashCode()
 
-    override fun toString(): String {
-        return nombre
-    }
+    override fun toString(): String = nombre
 
 }
