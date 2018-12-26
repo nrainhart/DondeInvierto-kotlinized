@@ -18,19 +18,17 @@ import static org.junit.Assert.*;
 
 public class IndicadoresTest extends AbstractPersistenceTest implements WithGlobalEntityManager, TransactionalOps{
 
-	List<Indicador> indicadores = new ArrayList<Indicador>();
-	List<Empresa> empresasParaIndicadores;
-	Usuario usuario = new Usuario("admin","admin");
+	private List<Indicador> indicadores = new ArrayList<>();
+	private List<Empresa> empresasParaIndicadores;
+	private Usuario usuario = new Usuario("admin","admin");
 	
 	@Before
 	public void setUp() {
-		withTransaction(() -> {
-			usuario.agregarIndicadores(Arrays.asList(new String[] { 
-					"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
-					"INDICADORDOS = cuentarara + fds",
-					"INDICADORTRES = INGRESONETO * 10 + ebitda",
-					"A = 5 / 3", "PRUEBA = ebitda + 5" }));
-		});
+		withTransaction(() -> usuario.agregarIndicadores(Arrays.asList(
+				"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
+				"INDICADORDOS = cuentarara + fds",
+				"INDICADORTRES = INGRESONETO * 10 + ebitda",
+				"A = 5 / 3", "PRUEBA = ebitda + 5")));
 		Usuario.activo(usuario);
 		indicadores = usuario.getIndicadores();
 		ArchivoXLS archivoEjemploIndicadores = new ArchivoXLS("src/test/resources/EjemploIndicadores.xls");
@@ -40,13 +38,13 @@ public class IndicadoresTest extends AbstractPersistenceTest implements WithGlob
 	
 	@Test
 	public void elArchivoIndicadoresLeeCorrectamente() {
-		Set<Indicador> indicadoresActuales = new HashSet<Indicador>(indicadores);
-		Set<Indicador> indicadoresEsperados = new HashSet<Indicador>(Arrays.asList(new Indicador[] {
-			new Indicador("INDICADORDOS"),
-			new Indicador("A"),
-			new Indicador("INGRESONETO"),
-			new Indicador("PRUEBA"),
-			new Indicador("INDICADORTRES")}));		
+		Set<Indicador> indicadoresActuales = new HashSet<>(indicadores);
+		Set<Indicador> indicadoresEsperados = new HashSet<>(Arrays.asList(
+				new Indicador("INDICADORDOS"),
+				new Indicador("A"),
+				new Indicador("INGRESONETO"),
+				new Indicador("PRUEBA"),
+				new Indicador("INDICADORTRES")));
 		boolean todosLosIndicadoresSonLosEsperados = indicadoresActuales.equals(indicadoresEsperados);
 		assertTrue(todosLosIndicadoresSonLosEsperados);
 	}
@@ -58,18 +56,18 @@ public class IndicadoresTest extends AbstractPersistenceTest implements WithGlob
 
 	@Test
 	public void elIndicadorIngresoNetoSeAplicaCorrectamenteALasEmpresas() {
-		int resultadosEsperados[] = {7000, 3000, 11000};
+		int[] resultadosEsperados = {7000, 3000, 11000};
 		Indicador ingresoNeto = usuario.buscarIndicador("ingresoNeto");
-		int resultados[] = this.resultadosLuegoDeAplicarIndicadorAEmpresas(ingresoNeto);
-		assertTrue(Arrays.equals(resultadosEsperados, resultados));
+		int[] resultados = this.resultadosLuegoDeAplicarIndicadorAEmpresas(ingresoNeto);
+		assertArrayEquals(resultadosEsperados, resultados);
 	}
 	
 	@Test
 	public void unIndicadorCompuestoPorIndicadorCuentaYNumeroSeAplicaCorrectamente(){
 		Indicador indicadorTres = usuario.buscarIndicador("indicadorTres");
-		int resultadosEsperados[] = {190000,330000,260000};
-		int resultados[] = this.resultadosLuegoDeAplicarIndicadorAEmpresas(indicadorTres);
-		assertTrue(Arrays.equals(resultadosEsperados, resultados));
+		int[] resultadosEsperados = {190000, 330000, 260000};
+		int[] resultados = this.resultadosLuegoDeAplicarIndicadorAEmpresas(indicadorTres);
+		assertArrayEquals(resultadosEsperados, resultados);
 	}
 	
 	@Test(expected = EntidadExistenteError.class)
@@ -110,7 +108,7 @@ public class IndicadoresTest extends AbstractPersistenceTest implements WithGlob
 	/* ------------------------------- METODOS AUXILIARES  ------------------------------- */
 	
 	private int cantidadIndicadoresAplicablesA(Empresa empresa) {
-		Set<Indicador> indicadAplicables = new HashSet<Indicador>(usuario.todosLosIndicadoresAplicablesA(empresa));
+		Set<Indicador> indicadAplicables = new HashSet<>(usuario.todosLosIndicadoresAplicablesA(empresa));
 		return indicadAplicables.size();
 	}
 	
@@ -119,7 +117,7 @@ public class IndicadoresTest extends AbstractPersistenceTest implements WithGlob
 	}
 	
 	private int[] resultadosLuegoDeAplicarIndicadorAEmpresas(Indicador ind){
-		int resultados[] = new int[3];
+		int[] resultados = new int[3];
 		Empresa miEmpresa = empresasParaIndicadores.get(0);
 		Empresa EmpresaLoca = empresasParaIndicadores.get(1);
 		Empresa EmpresaReLoca = empresasParaIndicadores.get(2);
@@ -134,4 +132,3 @@ public class IndicadoresTest extends AbstractPersistenceTest implements WithGlob
 	}
 
 }
-

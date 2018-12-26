@@ -14,7 +14,7 @@ public class DBUpTest extends AbstractPersistenceTest implements WithGlobalEntit
 	}
 
 	@Test
-	public void contextUpWithTransaction() throws Exception {
+	public void contextUpWithTransaction() {
 		withTransaction(() -> {});
 	}
 }

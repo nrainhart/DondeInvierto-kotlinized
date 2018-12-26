@@ -13,9 +13,9 @@ import static org.junit.Assert.assertTrue;
 
 public class EmpresaTest {
 
-	Empresa empresa;
-	List<Cuenta> cuentas;
-	List<Empresa> empresasLibroDos;
+	private Empresa empresa;
+	private List<Cuenta> cuentas;
+	private List<Empresa> empresasLibroDos;
 	
 	@Before
 	public void setUp() {
@@ -113,8 +113,8 @@ public class EmpresaTest {
 		return archivo.getEmpresas().size();
 	}
 
-	public boolean tienenLasMismasEmpresas(List<Empresa> primerListaEmpresas,
-			List<Empresa> segundaListaEmpresas) {
+	private boolean tienenLasMismasEmpresas(List<Empresa> primerListaEmpresas,
+											List<Empresa> segundaListaEmpresas) {
 		for (int i = 0; i < primerListaEmpresas.size(); i++) {
 			if (!this.sonLasMismasEmpresas(primerListaEmpresas.get(i), segundaListaEmpresas.get(i))) {
 				return false;

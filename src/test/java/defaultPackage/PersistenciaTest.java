@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 public class PersistenciaTest extends AbstractPersistenceTest implements WithGlobalEntityManager,TransactionalOps {
 
-	private ArrayList<Indicador> indicadores;
 	private RepositorioEmpresas repoEmpresas;
 	private RepositorioIndicadores repoIndicadores;
 	private RepositorioMetodologias repoMetodologias;
@@ -37,24 +36,20 @@ public class PersistenciaTest extends AbstractPersistenceTest implements WithGlo
 	@Before
 	public void setUp() {
 		repoIndicadores = new RepositorioIndicadores();
-		withTransaction(() -> {
-			repoIndicadores.agregarMultiplesIndicadores(Arrays.asList(new String[] { 
-					"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
-					"INDICADORDOS = cuentarara + fds",
-					"INDICADORTRES = INGRESONETO * 10 + ebitda",
-					"A = 5 / 3", 
-					"PRUEBA = ebitda + 5" }));
-		});
+		withTransaction(() -> repoIndicadores.agregarMultiplesIndicadores(Arrays.asList(
+				"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
+				"INDICADORDOS = cuentarara + fds",
+				"INDICADORTRES = INGRESONETO * 10 + ebitda",
+				"A = 5 / 3",
+				"PRUEBA = ebitda + 5")));
 		repoEmpresas = new RepositorioEmpresas();
 		repoMetodologias = new RepositorioMetodologias();
-		indicadores = new ArrayList<Indicador>();
-		listaEmpresas = new ArrayList<Empresa>();
-		listaCuentas1 = new ArrayList<Cuenta>();
-		listaCuentas2 =  new ArrayList<Cuenta>();
-		listaIndicadores = new ArrayList<String>();
-		listaMetodologias = new ArrayList<Metodologia>();
+		listaEmpresas = new ArrayList<>();
+		listaCuentas1 = new ArrayList<>();
+		listaCuentas2 = new ArrayList<>();
+		listaIndicadores = new ArrayList<>();
+		listaMetodologias = new ArrayList<>();
 
-		indicadores.addAll(repoIndicadores.obtenerTodos());
 		listaCuentas1.add(new Cuenta(Year.of(2015), "EBITDA", 2000));
 		listaCuentas1.add(new Cuenta(Year.of(2014), "FDS", 3000));
 		listaCuentas2.add(new Cuenta(Year.of(2013), "EBITDA", 6000));
@@ -66,14 +61,11 @@ public class PersistenciaTest extends AbstractPersistenceTest implements WithGlo
 		listaIndicadores.add("OTROINDICADOR = ebitda * 2 + fds - 2500");
 		listaMetodologias.add(obtenerMetodologia1("Metodologia1"));
 		listaMetodologias.add(obtenerMetodologia2("Metodologia2"));
-		
 	}
 
 	@Test
 	public void alAgregarDosEmpresasAlRepositorioEmpresasEstasSePersistenCorrectamente() {
-		withTransaction(() -> {
-			repoEmpresas.agregarMultiplesEmpresas(listaEmpresas);
-		});	
+		withTransaction(() -> repoEmpresas.agregarMultiplesEmpresas(listaEmpresas));
 		assertTrue(repoEmpresas.obtenerTodos().containsAll(listaEmpresas));
 	}
 	
@@ -90,9 +82,7 @@ public class PersistenciaTest extends AbstractPersistenceTest implements WithGlo
 	@Test
 	public void alAgregarDosIndicadoresAlRepositorioIndicadoresEstosSePersistenEsaCantidad() {
 		int cantidadAntesDeAgregar = repoIndicadores.obtenerTodos().size();
-		withTransaction(() -> {
-			repoIndicadores.agregarMultiplesIndicadores(listaIndicadores);
-		});	
+		withTransaction(() -> repoIndicadores.agregarMultiplesIndicadores(listaIndicadores));
 		assertEquals(cantidadAntesDeAgregar + 2, repoIndicadores.obtenerTodos().size());
 	}
 
@@ -112,17 +102,13 @@ public class PersistenciaTest extends AbstractPersistenceTest implements WithGlo
 	@Test
 	public void alAgregarDosMetodologiasAlRepositorioMetodologiasEstosSePersistenEsaCantidad() {
 		int cantidadAntesDeAgregar = repoMetodologias.obtenerTodos().size();
-		withTransaction(() -> {
-			listaMetodologias.forEach(metodologia -> repoMetodologias.agregar(metodologia));
-		});	
+		withTransaction(() -> listaMetodologias.forEach(metodologia -> repoMetodologias.agregar(metodologia)));
 		assertEquals(cantidadAntesDeAgregar + 2, repoMetodologias.obtenerTodos().size());
 	}
 
 	@Test
 	public void alAgregarDosMetodologiasAlRepositorioMetodologiasEstosSePersistenCorrectamente() {
-		withTransaction(() -> {
-			listaMetodologias.forEach(metodologia -> repoMetodologias.agregar(metodologia));
-		});	
+		withTransaction(() -> listaMetodologias.forEach(metodologia -> repoMetodologias.agregar(metodologia)));
 		assertTrue(repoMetodologias.obtenerTodos().containsAll(listaMetodologias));
 	}
 
@@ -135,7 +121,7 @@ public class PersistenciaTest extends AbstractPersistenceTest implements WithGlo
 
 	// ************ METODOS AUXILIARES************//
 	private List<Indicador> crearIndicadoresAPartirDeSusExpresiones(List<String> expresiones) {
-		List<Indicador> indicadores = new ArrayList<Indicador>();
+		List<Indicador> indicadores = new ArrayList<>();
 		expresiones.forEach(exp -> indicadores.add(ParserIndicadores.parse(exp)));
 		return indicadores;
 	}

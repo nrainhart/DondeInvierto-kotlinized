@@ -21,22 +21,20 @@ import static org.junit.Assert.assertTrue;
 
 public class CacheTest extends AbstractPersistenceTest implements WithGlobalEntityManager,TransactionalOps {
 
-	Usuario usuario = new Usuario("admin","admin");
-	List<Indicador> indicadores = new ArrayList<Indicador>();
-	List<Empresa> empresasParaIndicadores;
-	Indicador ingresoNeto;
-	Empresa sony;
-	Empresa google;
-	Empresa apple;
+	private Usuario usuario = new Usuario("admin","admin");
+	private List<Indicador> indicadores = new ArrayList<>();
+	private List<Empresa> empresasParaIndicadores;
+	private Indicador ingresoNeto;
+	private Empresa sony;
+	private Empresa google;
+	private Empresa apple;
 	
 	@Before
 	public void setUp() {
 		Usuario.activo(usuario);
-		withTransaction(() -> {
-			usuario.agregarIndicadores(Arrays.asList(new String[] { 
-					"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
-					"SALDOCRUDO = cuentarara + fds" }));
-		});
+		withTransaction(() -> usuario.agregarIndicadores(Arrays.asList(
+				"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
+				"SALDOCRUDO = cuentarara + fds")));
 		indicadores = usuario.getIndicadores();
 		ArchivoXLS archivoEjemploIndicadores = new ArchivoXLS("src/test/resources/EjemploIndicadores.xls");
 		archivoEjemploIndicadores.leerEmpresas();		

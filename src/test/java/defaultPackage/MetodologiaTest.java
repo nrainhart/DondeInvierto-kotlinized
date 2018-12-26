@@ -298,7 +298,7 @@ public class MetodologiaTest {
 	
 	@Test
 	public void soloDeloitteYFalabellaCumplenMetodologiaDeWarren(){
-		List<Empresa> empresas = new ArrayList<Empresa>();
+		List<Empresa> empresas = new ArrayList<>();
 		empresas.add(Deloitte);
 		empresas.add(Falabella);
 		assertTrue(metodologiaDeWarren.evaluarPara(empresasParaComparacionConMetodologias, anioActual).containsAll(empresas));
@@ -316,7 +316,7 @@ public class MetodologiaTest {
 	
 	@Test
 	public void soloIBMNOCumpleMetodologiaDeWarren(){
-		assertTrue(metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias, anioActual).get(0)==IBM);
+		assertSame(metodologiaDeWarren.empresasQueNoCumplenTaxativas(empresasParaComparacionConMetodologias, anioActual).get(0), IBM);
 	}
 	
 	@Test
@@ -341,7 +341,7 @@ public class MetodologiaTest {
 	
 	@Test
 	public void soloIBMYFalabellaNOtienenDatosSuficientesParaMetodologiaDeMike(){
-		List<Empresa> empresas = new ArrayList<Empresa>();
+		List<Empresa> empresas = new ArrayList<>();
 		empresas.add(IBM);
 		empresas.add(Falabella);
 		assertTrue(metodologiaDeMike.empresasConDatosFaltantes(empresasParaComparacionConMetodologias, anioActual).containsAll(empresas));
@@ -367,6 +367,5 @@ public class MetodologiaTest {
 		metodologia.agregarCondicionPrioritaria(condPrior);
 		assertTrue(metodologia.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(0)==Falabella && metodologia.evaluarPara(empresasParaComparacionConMetodologias, anioActual).get(1)==Deloitte);
 	}
-
 	
 }
