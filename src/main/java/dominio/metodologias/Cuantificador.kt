@@ -12,7 +12,7 @@ abstract class Cuantificador {
 
     @Id
     @GeneratedValue
-    protected var id: Long? = null
+    var id: Long? = null
 
     abstract fun evaluarEn(empresa: Empresa, anio: Year): Int
 
