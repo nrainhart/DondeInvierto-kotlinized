@@ -8,13 +8,11 @@ import java.time.Year;
 @Entity
 @Table(name = "indicadoresPrecalculados")
 public class IndicadorPrecalculado {
-	//@OneToOne o @ManyToOne ???
-	
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	@OneToOne
+	@ManyToOne
 	private Empresa empresa;
 	private Year anio;
 	private int valor;
