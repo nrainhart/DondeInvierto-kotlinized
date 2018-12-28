@@ -1,6 +1,7 @@
 package dominio.indicadores
 
 import dominio.empresas.Empresa
+import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 
 import java.time.Year
@@ -14,7 +15,7 @@ class ExpresionOperacion(private val operandoIzq: Expresion,
         "-" -> OperacionAritmetica.Menos
         "*" -> OperacionAritmetica.Por
         "/" -> OperacionAritmetica.Dividido
-        else -> throw IllegalStateException("Las únicas operaciones aceptadas son: [+,-,*,/]")
+        else -> throw IllegalArgumentException("Las únicas operaciones aceptadas son: [+,-,*,/]")
     }
 
     override fun evaluarEn(empresa: Empresa, anio: Year): Int {
