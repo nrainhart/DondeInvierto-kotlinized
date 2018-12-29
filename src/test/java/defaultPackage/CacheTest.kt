@@ -7,7 +7,6 @@ import dominio.indicadores.IndicadorPrecalculado
 import dominio.usuarios.Usuario
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager
 import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest
@@ -18,11 +17,10 @@ import java.util.*
 class CacheTest : AbstractPersistenceTest(), WithGlobalEntityManager, TransactionalOps {
 
     private val usuario = Usuario("admin", "admin")
-    private lateinit var ingresoNeto: Indicador
-    private lateinit var sony: Empresa
+    private val ingresoNeto: Indicador
+    private val sony: Empresa
 
-    @Before
-    fun setUp() {
+    init {
         Usuario.activo = usuario
         withTransaction {
             usuario.agregarIndicadores(Arrays.asList(
