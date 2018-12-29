@@ -118,11 +118,8 @@ class EmpresaTest {
     }
 
     private fun sonLasMismasCuentas(cuentasEsperadas: List<Cuenta>, cuentas: List<Cuenta>): Boolean {
-        var resultado = true
-        for (i in cuentasEsperadas.indices) {
-            resultado = resultado && cuentasSonIguales(cuentas[i], cuentasEsperadas[i])
-        }
-        return resultado && cuentasEsperadas.size == cuentas.size
+        return cuentasEsperadas.size == cuentas.size &&
+                cuentasEsperadas.withIndex().all {cuentaEsperada -> cuentasSonIguales(cuentas[cuentaEsperada.index], cuentaEsperada.value)}
     }
 
     private fun cuentasSonIguales(cuenta: Cuenta, cuentaEsperada: Cuenta): Boolean {
