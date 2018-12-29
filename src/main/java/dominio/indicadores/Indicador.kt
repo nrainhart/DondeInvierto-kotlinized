@@ -73,7 +73,7 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
         expresion = indicador.expresion
     }
 
-    fun getResultados(): List<IndicadorPrecalculado>? = resultados
+    fun getResultados(): List<IndicadorPrecalculado> = resultados
 
     private fun setResultados(resultados: MutableList<IndicadorPrecalculado>) {
         this.resultados = resultados
