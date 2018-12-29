@@ -49,9 +49,8 @@ class Metodologia(val nombre: String) {
     private fun obtenerTodasLasCondiciones(): List<Condicion> = condicionesTaxativas.plus(condicionesPrioritarias)
 
     private fun empresasConDatosInsuficientesParaLasCondiciones(empresas: List<Empresa>, condiciones: List<Condicion>, anioActual: Int): List<Empresa> {
-        val empresasConDatosFaltantes = HashSet<Empresa>()
-        condiciones.forEach { cond -> empresasConDatosFaltantes.addAll(empresasConDatosFaltantesParaEstaCondicion(empresas, cond, anioActual)) }
-        return ArrayList(empresasConDatosFaltantes)
+        return condiciones.flatMap { cond -> empresasConDatosFaltantesParaEstaCondicion(empresas, cond, anioActual) }
+                .distinct()
     }
 
     private fun empresasConDatosFaltantesParaEstaCondicion(empresas: List<Empresa>, condicion: Condicion, anioActual: Int): List<Empresa> {
