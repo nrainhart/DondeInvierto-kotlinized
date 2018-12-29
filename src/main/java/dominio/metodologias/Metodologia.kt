@@ -46,12 +46,7 @@ class Metodologia(val nombre: String) {
         return empresas.filter { empresa -> !empresasQueNoCumplenTaxativas(empresas, anioActual).contains(empresa) }
     }
 
-    private fun obtenerTodasLasCondiciones(): List<Condicion> {
-        val condiciones = ArrayList<Condicion>()
-        condiciones.addAll(condicionesTaxativas)
-        condiciones.addAll(condicionesPrioritarias)
-        return condiciones
-    }
+    private fun obtenerTodasLasCondiciones(): List<Condicion> = condicionesTaxativas.plus(condicionesPrioritarias)
 
     private fun empresasConDatosInsuficientesParaLasCondiciones(empresas: List<Empresa>, condiciones: List<Condicion>, anioActual: Int): List<Empresa> {
         val empresasConDatosFaltantes = HashSet<Empresa>()
