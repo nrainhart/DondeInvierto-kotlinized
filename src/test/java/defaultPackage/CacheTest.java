@@ -31,7 +31,7 @@ public class CacheTest extends AbstractPersistenceTest implements WithGlobalEnti
 	
 	@Before
 	public void setUp() {
-		Usuario.activo(usuario);
+		Usuario.Companion.setActivo(usuario);
 		withTransaction(() -> usuario.agregarIndicadores(Arrays.asList(
 				"INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
 				"SALDOCRUDO = cuentarara + fds")));

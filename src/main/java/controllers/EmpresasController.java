@@ -35,7 +35,7 @@ public class EmpresasController implements WithGlobalEntityManager, Transactiona
 	
 	private static List<Cuenta> getCuentasEmpresa(Empresa empresa, Usuario usuario) {
 		List<Cuenta> cuentasSeleccionadas = empresa.getCuentas();
-		Usuario.activo(usuario);//Necesario para que los indicadores se evaluen en el contexto de este usuario
+		Usuario.Companion.setActivo(usuario);//Necesario para que los indicadores se evaluen en el contexto de este usuario
 		cuentasSeleccionadas.addAll(empresa.resultadosParaEstosIndicadores(usuario.getIndicadores()));			
 		cuentasSeleccionadas.sort((unaCuenta, otraCuenta) -> otraCuenta.getAnio().compareTo(unaCuenta.getAnio()));
 		return cuentasSeleccionadas;
