@@ -35,7 +35,7 @@ class Metodologia(val nombre: String) {
 
     fun empresasConDatosFaltantes(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
         val condiciones = obtenerTodasLasCondiciones()
-        return this.empresasConDatosInsuficientesParaLasCondiciones(empresas, condiciones, anioActual)
+        return empresasConDatosInsuficientesParaLasCondiciones(empresas, condiciones, anioActual)
     }
 
     private fun empresasSinDatosFaltantes(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
@@ -54,7 +54,7 @@ class Metodologia(val nombre: String) {
     }
 
     private fun empresasConDatosFaltantesParaEstaCondicion(empresas: List<Empresa>, condicion: Condicion, anioActual: Int): List<Empresa> {
-        return empresas.filter { emp -> !condicion.getOperando().sePuedeEvaluarPara(emp, anioActual) }
+        return empresas.filter { emp -> !condicion.operando.sePuedeEvaluarPara(emp, anioActual) }
     }
 
     private fun cumpleCondicionesTaxativas(empr: Empresa, anioActual: Int): Boolean {
