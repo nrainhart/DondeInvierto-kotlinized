@@ -1,8 +1,8 @@
 package defaultPackage
 
-import dominio.empresas.ArchivoXLS
-import dominio.empresas.Empresa
-import dominio.indicadores.Indicador
+import dondeInvierto.dominio.empresas.ArchivoXLS
+import dondeInvierto.dominio.empresas.Empresa
+import dondeInvierto.dominio.indicadores.Indicador
 import dominio.usuarios.Usuario
 import excepciones.EntidadExistenteError
 import org.junit.Assert.*

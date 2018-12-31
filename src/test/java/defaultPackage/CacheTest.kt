@@ -1,9 +1,9 @@
 package defaultPackage
 
-import dominio.empresas.ArchivoXLS
-import dominio.empresas.Empresa
-import dominio.indicadores.Indicador
-import dominio.indicadores.IndicadorPrecalculado
+import dondeInvierto.dominio.empresas.ArchivoXLS
+import dondeInvierto.dominio.empresas.Empresa
+import dondeInvierto.dominio.indicadores.Indicador
+import dondeInvierto.dominio.indicadores.IndicadorPrecalculado
 import dominio.usuarios.Usuario
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

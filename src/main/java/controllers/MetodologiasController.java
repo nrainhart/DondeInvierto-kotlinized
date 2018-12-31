@@ -1,9 +1,9 @@
 package controllers;
 
-import dominio.empresas.Empresa;
-import dominio.empresas.RepositorioEmpresas;
-import dominio.metodologias.Metodologia;
-import dominio.usuarios.RepositorioUsuarios;
+import dondeInvierto.dominio.empresas.Empresa;
+import repo.RepositorioEmpresas;
+import dondeInvierto.dominio.metodologias.Metodologia;
+import repo.RepositorioUsuarios;
 import dominio.usuarios.Usuario;
 import spark.ModelAndView;
 import spark.Request;

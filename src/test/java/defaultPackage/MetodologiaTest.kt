@@ -1,15 +1,12 @@
 package defaultPackage
 
-import dominio.empresas.ArchivoXLS
-import dominio.empresas.Empresa
-import dominio.indicadores.Indicador
-import dominio.metodologias.*
-import dominio.parser.ParserIndicadores
+import dondeInvierto.dominio.empresas.ArchivoXLS
+import dondeInvierto.dominio.empresas.Empresa
+import dondeInvierto.dominio.indicadores.Indicador
+import dondeInvierto.dominio.metodologias.*
+import dondeInvierto.dominio.parser.ParserIndicadores
 import excepciones.NoExisteCuentaError
-import org.junit.Before
 import org.junit.Test
-
-import java.util.ArrayList
 
 import org.junit.Assert.*
 import kotlin.test.assertFailsWith

@@ -1,17 +1,17 @@
 package dominio.usuarios
 
-import dominio.empresas.Empresa
-import dominio.indicadores.Indicador
-import dominio.indicadores.RepositorioIndicadores
-import dominio.metodologias.Metodologia
-import dominio.metodologias.RepositorioMetodologias
-import dominio.parser.ParserIndicadores
+import dondeInvierto.dominio.empresas.Empresa
+import dondeInvierto.dominio.indicadores.Indicador
+import repo.RepositorioIndicadores
+import dondeInvierto.dominio.metodologias.Metodologia
+import repo.RepositorioMetodologias
+import dondeInvierto.dominio.parser.ParserIndicadores
 
 import javax.persistence.*
 import java.time.Year
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "dominio/usuarios")
 class Usuario(val email: String, private val password: String) {
     @Id
     @GeneratedValue

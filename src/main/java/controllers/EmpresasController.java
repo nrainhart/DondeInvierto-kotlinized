@@ -1,9 +1,9 @@
 package controllers;
 
-import dominio.empresas.Cuenta;
-import dominio.empresas.Empresa;
-import dominio.empresas.RepositorioEmpresas;
-import dominio.usuarios.RepositorioUsuarios;
+import dondeInvierto.dominio.empresas.Cuenta;
+import dondeInvierto.dominio.empresas.Empresa;
+import repo.RepositorioEmpresas;
+import repo.RepositorioUsuarios;
 import dominio.usuarios.Usuario;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;

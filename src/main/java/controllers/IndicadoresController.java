@@ -1,7 +1,7 @@
 package controllers;
 
-import dominio.indicadores.Indicador;
-import dominio.usuarios.RepositorioUsuarios;
+import dondeInvierto.dominio.indicadores.Indicador;
+import repo.RepositorioUsuarios;
 import dominio.usuarios.Usuario;
 import excepciones.EntidadExistenteError;
 import excepciones.ParserError;
@@ -39,7 +39,8 @@ public class IndicadoresController implements WithGlobalEntityManager, Transacti
 	}
 
 	public Void create(Request req, Response res) {
-		Usuario usuarioActivo = new RepositorioUsuarios().obtenerPorId(Long.parseLong(req.cookie("idUsuario")));
+		long idUsuario = Long.parseLong(req.cookie("idUsuario"));
+		Usuario usuarioActivo = new RepositorioUsuarios().obtenerPorId(idUsuario);
 		String formulaIndicador = req.queryParams("indicador");
 		try {
 			withTransaction(()-> {

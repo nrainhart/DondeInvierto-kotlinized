@@ -1,10 +1,9 @@
 package defaultPackage
 
-import dominio.indicadores.ExpresionOperacion
-import dominio.indicadores.ExpresionValor
+import dondeInvierto.dominio.indicadores.ExpresionOperacion
+import dondeInvierto.dominio.indicadores.ExpresionValor
 import org.junit.Test
 import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import kotlin.test.assertFailsWith
 
 class ExpresionTest {

@@ -1,10 +1,10 @@
 package server;
 
-import dominio.empresas.Cuenta;
-import dominio.empresas.Empresa;
-import dominio.empresas.RepositorioEmpresas;
-import dominio.metodologias.*;
-import dominio.usuarios.RepositorioUsuarios;
+import dondeInvierto.dominio.empresas.Cuenta;
+import dondeInvierto.dominio.empresas.Empresa;
+import repo.RepositorioEmpresas;
+import dondeInvierto.dominio.metodologias.*;
+import repo.RepositorioUsuarios;
 import dominio.usuarios.Usuario;
 import excepciones.EntidadExistenteError;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;

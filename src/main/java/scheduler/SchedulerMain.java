@@ -1,6 +1,6 @@
 package scheduler;
 
-import dominio.usuarios.RepositorioUsuarios;
+import repo.RepositorioUsuarios;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
