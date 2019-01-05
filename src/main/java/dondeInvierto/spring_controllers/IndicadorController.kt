@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class IndicadorController(@Autowired val indicadorRepository: IndicadorRepository) {
 
     @GetMapping
-    fun get() = indicadorRepository.findAll().map { it.toString() }
+    fun get() = indicadorRepository.findAll().map { it.equivalencia }
 
     @PostMapping
     fun create(@RequestBody creacionIndicadorTO: CreacionIndicadorTO) {
