@@ -2,16 +2,28 @@ package dondeInvierto.spring_controllers
 
 import dondeInvierto.dominio.empresas.Cuenta
 import dondeInvierto.dominio.empresas.Empresa
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.time.Year
+import dondeInvierto.dominio.indicadores.Indicador
+import dondeInvierto.repo.EmpresaRepository
+import dondeInvierto.repo.IndicadorRepository
+import excepciones.NoExisteElResultadoBuscadoError
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/empresas")
-class EmpresaController {
+class EmpresaController(@Autowired val empresaRepository: EmpresaRepository,
+                        @Autowired val indicadorRepository: IndicadorRepository
+) {
 
   @GetMapping
-  fun get() = Empresa("10Pines", mutableListOf(Cuenta(Year.of(2018), "ebitda", 200)))
+  fun listar() = empresaRepository.findAll()
 
+  @GetMapping("/{id}")
+  fun detalle(@PathVariable("id") idEmpresa: Long): List<Cuenta> {
+    val empresa: Empresa = empresaRepository.findById(idEmpresa) //TODO reemplazar con findByIdOrNull cuando esté disponible
+            .orElseThrow { NoExisteElResultadoBuscadoError("No pudo encontrarse el resultado para Empresa[id=$idEmpresa]") }
+    val indicadoresAEvaluar: List<Indicador> = indicadorRepository.findAll().toList()
+    val cuentasSeleccionadas = empresa.getCuentas() + empresa.resultadosParaEstosIndicadores(indicadoresAEvaluar)
+    return cuentasSeleccionadas.sortedByDescending { it.anio }
+  }
 }
