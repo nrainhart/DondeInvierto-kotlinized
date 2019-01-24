@@ -18,6 +18,7 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
     var equivalencia: String? = null
 
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "indicador_id")
     private var resultados: MutableList<IndicadorPrecalculado> = ArrayList()
 
     @Transient
