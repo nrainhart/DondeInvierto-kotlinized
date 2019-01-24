@@ -7,15 +7,7 @@ public class Server {
 
 	public static void main(String[] args) {
 		new Bootstrap().init();
-		ProcessBuilder process = new ProcessBuilder();
-		Integer port;
-		if (process.environment().get("PORT") != null) {
-			port = Integer.parseInt(process.environment().get("PORT"));
-		} else {
-			port = 4567;
-		}
-		Spark.port(port);
-		//Spark.port(8080);
+		Spark.port(4567);
 		DebugScreen.enableDebugScreen();
 		Router.configure();
 	}

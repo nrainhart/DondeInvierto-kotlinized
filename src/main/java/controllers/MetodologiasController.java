@@ -4,7 +4,7 @@ import dondeInvierto.dominio.empresas.Empresa;
 import repo.RepositorioEmpresas;
 import dondeInvierto.dominio.metodologias.Metodologia;
 import repo.RepositorioUsuarios;
-import dominio.usuarios.Usuario;
+import dondeInvierto.dominio.Usuario;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

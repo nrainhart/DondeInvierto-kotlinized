@@ -1,4 +1,4 @@
-package dominio.usuarios
+package dondeInvierto.dominio
 
 import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.indicadores.Indicador
@@ -11,7 +11,7 @@ import javax.persistence.*
 import java.time.Year
 
 @Entity
-@Table(name = "dominio/usuarios")
+@Table(name = "usuarios")
 class Usuario(val email: String, private val password: String) {
     @Id
     @GeneratedValue

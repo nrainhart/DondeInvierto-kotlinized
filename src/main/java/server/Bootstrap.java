@@ -5,7 +5,7 @@ import dondeInvierto.dominio.empresas.Empresa;
 import repo.RepositorioEmpresas;
 import dondeInvierto.dominio.metodologias.*;
 import repo.RepositorioUsuarios;
-import dominio.usuarios.Usuario;
+import dondeInvierto.dominio.Usuario;
 import excepciones.EntidadExistenteError;
 import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
@@ -85,9 +85,11 @@ public class Bootstrap implements WithGlobalEntityManager, EntityManagerOps, Tra
 		Usuario usuario = new RepositorioUsuarios().obtenerPorId(id);
 		try{
 		usuario.agregarIndicadores(
-				Arrays.asList(new String[] { "INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
-						"INDICADORDOS = cuentarara + fds", "INDICADORTRES = INGRESONETO * 10 + ebitda", "A = 5 / 3",
-						"PRUEBA = ebitda + 5" }));
+				Arrays.asList("INGRESONETO = netooperacionescontinuas + netooperacionesdiscontinuas",
+						"INDICADORDOS = cuentarara + fds",
+						"INDICADORTRES = INGRESONETO * 10 + ebitda",
+						"A = 5 / 3",
+						"PRUEBA = ebitda + 5"));
 		} catch(EntidadExistenteError e) {
 			//Si ya existen los indicadores, no hago nada
 		}

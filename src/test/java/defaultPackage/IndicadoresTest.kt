@@ -3,7 +3,7 @@ package defaultPackage
 import dondeInvierto.dominio.empresas.ArchivoXLS
 import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.indicadores.Indicador
-import dominio.usuarios.Usuario
+import dondeInvierto.dominio.Usuario
 import excepciones.EntidadExistenteError
 import org.junit.Assert.*
 import org.junit.Test

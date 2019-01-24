@@ -1,7 +1,7 @@
 package dondeInvierto.dominio.indicadores
 
 import dondeInvierto.dominio.empresas.Empresa
-import dominio.usuarios.Usuario
+import dondeInvierto.dominio.Usuario
 
 import java.time.Year
 

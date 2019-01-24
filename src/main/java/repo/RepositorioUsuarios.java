@@ -1,6 +1,6 @@
 package repo;
 
-import dominio.usuarios.Usuario;
+import dondeInvierto.dominio.Usuario;
 import excepciones.NoExisteUsuarioError;
 
 public class RepositorioUsuarios extends AbstractRepository<Usuario>{

@@ -4,7 +4,7 @@ import dondeInvierto.dominio.empresas.Cuenta;
 import dondeInvierto.dominio.empresas.Empresa;
 import repo.RepositorioEmpresas;
 import repo.RepositorioUsuarios;
-import dominio.usuarios.Usuario;
+import dondeInvierto.dominio.Usuario;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 import spark.ModelAndView;

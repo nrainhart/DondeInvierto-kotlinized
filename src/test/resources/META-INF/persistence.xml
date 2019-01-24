@@ -23,7 +23,7 @@
      <class>dondeInvierto.dominio.metodologias.Cuantificador</class>
      <class>dondeInvierto.dominio.metodologias.Antiguedad</class>
      <class>repo.RepositorioMetodologias</class>
-     <class>dominio.usuarios.Usuario</class>
+     <class>dondeInvierto.dominio.Usuario</class>
      <class>repo.AbstractLocalRepository</class>
       
         <properties> 

@@ -4,7 +4,7 @@ import dondeInvierto.dominio.empresas.ArchivoXLS
 import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.indicadores.Indicador
 import dondeInvierto.dominio.indicadores.IndicadorPrecalculado
-import dominio.usuarios.Usuario
+import dondeInvierto.dominio.Usuario
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

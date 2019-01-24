@@ -2,7 +2,7 @@ package controllers;
 
 import dondeInvierto.dominio.indicadores.Indicador;
 import repo.RepositorioUsuarios;
-import dominio.usuarios.Usuario;
+import dondeInvierto.dominio.Usuario;
 import excepciones.EntidadExistenteError;
 import excepciones.ParserError;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
