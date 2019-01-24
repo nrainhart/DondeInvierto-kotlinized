@@ -4,13 +4,11 @@ import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.metodologias.Cuantificador
 import dondeInvierto.dominio.parser.ParserIndicadores
 import excepciones.NoExisteCuentaError
-import excepciones.NoExisteElResultadoBuscadoError
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps
-
-import javax.persistence.*
 import java.time.Year
-import java.util.ArrayList
+import java.util.*
+import javax.persistence.*
 
 @Entity
 class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, TransactionalOps {
@@ -25,13 +23,8 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
     var expresion: Expresion? = null
 
     override fun evaluarEn(empresa: Empresa, anio: Year): Int {
-        try {
-            return obtenerResultadoPara(empresa, anio)
-        } catch (e: NoExisteElResultadoBuscadoError) {
-            val indPrecalculado = precalcularIndicador(empresa, anio)
-            guardarResultado(indPrecalculado)
-            return indPrecalculado.valor
-        }
+        return obtenerResultadoPara(empresa, anio)
+                ?: calcularResultadoPara(empresa, anio)
     }
 
     fun esAplicableA(empresa: Empresa, anio: Year): Boolean {
@@ -43,18 +36,23 @@ class Indicador(val nombre: String) : Cuantificador(), WithGlobalEntityManager, 
         }
     }
 
+    private fun obtenerResultadoPara(empresa: Empresa, anio: Year): Int? {
+        return resultados.firstOrNull { it.esDe(empresa, anio) }
+                ?.valor
+    }
+
+    private fun calcularResultadoPara(empresa: Empresa, anio: Year): Int {
+        val indPrecalculado = precalcularIndicador(empresa, anio)
+        guardarResultado(indPrecalculado)
+        return indPrecalculado.valor
+    }
+
     private fun precalcularIndicador(empresa: Empresa, anio: Year): IndicadorPrecalculado {
         if (expresion == null) {
             inicializarExpresion()
         }
         val resultado = expresion!!.evaluarEn(empresa, anio)
         return IndicadorPrecalculado(empresa, anio, resultado)
-    }
-
-    private fun obtenerResultadoPara(empresa: Empresa, anio: Year): Int {
-        return resultados.firstOrNull { it.esDe(empresa, anio) }
-                ?.valor
-                ?: throw NoExisteElResultadoBuscadoError("No pudo encontrarse el resultado para " + empresa.nombre + " en " + anio)
     }
 
     private fun guardarResultado(indPrecalculado: IndicadorPrecalculado) {
