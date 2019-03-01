@@ -1,4 +1,4 @@
-package repo;
+package dondeInvierto.dominio.repo;
 
 import excepciones.EntidadExistenteError;
 

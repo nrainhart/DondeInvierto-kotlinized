@@ -4,7 +4,7 @@ import dondeInvierto.dominio.empresas.Cuenta
 import dondeInvierto.dominio.empresas.Empresa
 import repo.RepositorioEmpresas
 import dondeInvierto.dominio.indicadores.Indicador
-import repo.RepositorioIndicadores
+import dondeInvierto.dominio.repo.RepositorioIndicadores
 import dondeInvierto.dominio.metodologias.*
 import dondeInvierto.dominio.parser.ParserIndicadores
 import excepciones.EntidadExistenteError
@@ -14,7 +14,7 @@ import org.junit.Test
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager
 import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps
-import repo.RepositorioMetodologias
+import dondeInvierto.dominio.repo.RepositorioMetodologias
 import java.time.Year
 import kotlin.test.assertFailsWith
 

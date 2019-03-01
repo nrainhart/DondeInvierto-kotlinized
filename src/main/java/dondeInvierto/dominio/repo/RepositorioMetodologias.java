@@ -1,7 +1,7 @@
-package repo;
+package dondeInvierto.dominio.repo;
 
 import dondeInvierto.dominio.metodologias.Metodologia;
-import repo.AbstractLocalRepository;
+import dondeInvierto.dominio.repo.AbstractLocalRepository;
 
 import javax.persistence.Entity;
 import java.util.List;

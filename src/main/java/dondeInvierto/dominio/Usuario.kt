@@ -2,9 +2,9 @@ package dondeInvierto.dominio
 
 import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.indicadores.Indicador
-import repo.RepositorioIndicadores
+import dondeInvierto.dominio.repo.RepositorioIndicadores
 import dondeInvierto.dominio.metodologias.Metodologia
-import repo.RepositorioMetodologias
+import dondeInvierto.dominio.repo.RepositorioMetodologias
 import dondeInvierto.dominio.parser.ParserIndicadores
 
 import javax.persistence.*

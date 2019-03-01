@@ -1,4 +1,4 @@
-package repo;
+package dondeInvierto.dominio.repo;
 
 import dondeInvierto.dominio.indicadores.Indicador;
 import dondeInvierto.dominio.empresas.Empresa;
