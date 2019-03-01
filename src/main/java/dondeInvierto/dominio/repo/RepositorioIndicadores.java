@@ -22,7 +22,7 @@ public class RepositorioIndicadores extends AbstractLocalRepository<Indicador> {
 	}
 	
 	public void eliminarIndicadores(){
-		elementos.clear();
+		getElementos().clear();
 	}
 	
 	public void eliminarResultadosPrecalculados(){
