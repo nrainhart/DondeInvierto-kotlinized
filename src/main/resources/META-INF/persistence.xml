@@ -1,49 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
-    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" 
-    version="2.0"> 
-  
-    <persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
-     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-     
-     <!-- CLASES A PERSISTIR-->
-     <class>dondeInvierto.dominio.empresas.Empresa</class>
-     <class>dondeInvierto.dominio.empresas.Cuenta</class>
-     <class>dondeInvierto.dominio.EntradaRegistroModificacionesListener</class>
-     <class>dondeInvierto.dominio.indicadores.Indicador</class>
-     <class>dondeInvierto.dominio.indicadores.IndicadorPrecalculado</class>
-     <class>dondeInvierto.dominio.repo.RepositorioIndicadores</class>
-     <class>dondeInvierto.dominio.metodologias.Metodologia</class>
-     <class>dondeInvierto.dominio.metodologias.CondicionPrioritaria</class>
-     <class>dondeInvierto.dominio.metodologias.CondicionTaxativa</class>
-     <class>dondeInvierto.dominio.metodologias.Condicion</class>
-     <class>dondeInvierto.dominio.metodologias.OperandoCondicion</class>
-     <class>dondeInvierto.dominio.metodologias.Cuantificador</class>
-     <class>dondeInvierto.dominio.metodologias.Antiguedad</class>
-     <class>dondeInvierto.dominio.repo.RepositorioMetodologias</class>
-     <class>dondeInvierto.dominio.Usuario</class>
-     <class>dondeInvierto.dominio.repo.AbstractLocalRepository</class>
-      
-        <properties> 
-     <property name="hibernate.archive.autodetection" value="class"/>        
-         
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" /> 
-            <property name="hibernate.connection.url" value="jdbc:mysql://us-cdbr-iron-east-05.cleardb.net/heroku_35f471e2bde836f?reconnect=true"/>
-			<property name="hibernate.connection.username" value="b2db980f74caa3"/>
-			<property name="hibernate.connection.password" value="9e4396dc"/>
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
 
-			<!-- <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/donde_invierto_bd" />
- 			<property name="hibernate.connection.username" value="root" />
-  			<property name="hibernate.connection.password" value="cinturon1" /> -->
-                            
-            <property name="hibernate.show_sql" value="true" /> 
-            <property name="hibernate.format_sql" value="true" /> 
-            <property name="use_sql_comments" value="true" /> 
-            <property name="hibernate.hbm2ddl.auto" value="update" /> 
+    <persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <!-- CLASES A PERSISTIR-->
+        <class>dondeInvierto.dominio.empresas.Empresa</class>
+        <class>dondeInvierto.dominio.empresas.Cuenta</class>
+        <class>dondeInvierto.dominio.indicadores.Indicador</class>
+        <class>dondeInvierto.dominio.indicadores.IndicadorPrecalculado</class>
+        <class>dondeInvierto.dominio.repo.RepositorioIndicadores</class>
+        <class>dondeInvierto.dominio.metodologias.Metodologia</class>
+        <class>dondeInvierto.dominio.metodologias.CondicionPrioritaria</class>
+        <class>dondeInvierto.dominio.metodologias.CondicionTaxativa</class>
+        <class>dondeInvierto.dominio.metodologias.Condicion</class>
+        <class>dondeInvierto.dominio.metodologias.OperandoCondicion</class>
+        <class>dondeInvierto.dominio.metodologias.Cuantificador</class>
+        <class>dondeInvierto.dominio.metodologias.Antiguedad</class>
+        <class>dondeInvierto.dominio.repo.RepositorioMetodologias</class>
+        <class>dondeInvierto.dominio.Usuario</class>
+        <class>dondeInvierto.dominio.repo.AbstractLocalRepository</class>
+
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class"/>
+
+            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:app-db" />
+            <property name="hibernate.connection.username" value="sa" />
+            <property name="hibernate.connection.password" value="" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+
+            <!-- <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/donde_invierto_bd"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="cinturon1"/> -->
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="use_sql_comments" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
-          
-    </persistence-unit> 
-  
+
+    </persistence-unit>
+
 </persistence>

@@ -2,11 +2,11 @@ package defaultPackage
 
 import dondeInvierto.dominio.empresas.Cuenta
 import dondeInvierto.dominio.empresas.Empresa
-import repo.RepositorioEmpresas
 import dondeInvierto.dominio.indicadores.Indicador
-import dondeInvierto.dominio.repo.RepositorioIndicadores
 import dondeInvierto.dominio.metodologias.*
 import dondeInvierto.dominio.parser.ParserIndicadores
+import dondeInvierto.dominio.repo.RepositorioIndicadores
+import dondeInvierto.dominio.repo.RepositorioMetodologias
 import excepciones.EntidadExistenteError
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -14,7 +14,7 @@ import org.junit.Test
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager
 import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps
-import dondeInvierto.dominio.repo.RepositorioMetodologias
+import repo.RepositorioEmpresas
 import java.time.Year
 import kotlin.test.assertFailsWith
 
