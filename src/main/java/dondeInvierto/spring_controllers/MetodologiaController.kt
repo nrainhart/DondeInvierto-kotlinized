@@ -2,6 +2,7 @@ package dondeInvierto.spring_controllers
 
 import dondeInvierto.dominio.empresas.Empresa
 import dondeInvierto.dominio.metodologias.Metodologia
+import dondeInvierto.dominio.metodologias.ResultadoEvaluacionDeMetodologias
 import dondeInvierto.repo.EmpresaRepository
 import dondeInvierto.repo.MetodologiaRepository
 import excepciones.NoExisteElResultadoBuscadoError
@@ -22,16 +23,21 @@ class MetodologiaController(@Autowired val metodologiaRepository: MetodologiaRep
     fun listar() = metodologiaRepository.findAll().toList()
 
     @GetMapping("/{id}")
-    fun evaluar(@PathVariable("id") idMetodologia: Long): ResultadoEvaluacionDeMetodologias {
+    fun evaluar(@PathVariable("id") idMetodologia: Long): ResultadoEvaluacionDeMetodologiasTO {
         val metodologiaAEvaluar: Metodologia = metodologiaRepository.findById(idMetodologia)
                 .orElseThrow { NoExisteElResultadoBuscadoError("No pudo encontrarse el resultado para Metodologia[id=$idMetodologia]") }
         val empresas: List<Empresa> = empresaRepository.findAll().toList()
         val anioActual = LocalDate.now().year
-        return ResultadoEvaluacionDeMetodologias(
-                metodologiaAEvaluar.nombre,
-                nombresDeEmpresas(metodologiaAEvaluar.evaluarPara(empresas, anioActual)),
-                nombresDeEmpresas(metodologiaAEvaluar.empresasQueNoCumplenTaxativas(empresas, anioActual)),
-                nombresDeEmpresas(metodologiaAEvaluar.empresasConDatosFaltantes(empresas, anioActual))
+        val resultadoEvaluacionDeMetodologias = metodologiaAEvaluar.resultadoPara(empresas, anioActual)
+        return convertirATO(resultadoEvaluacionDeMetodologias)
+    }
+
+    private fun convertirATO(resultadoEvaluacionDeMetodologias: ResultadoEvaluacionDeMetodologias): ResultadoEvaluacionDeMetodologiasTO {
+        return ResultadoEvaluacionDeMetodologiasTO(
+                resultadoEvaluacionDeMetodologias.nombreMetodologia,
+                nombresDeEmpresas(resultadoEvaluacionDeMetodologias.empresasOrdenadas),
+                nombresDeEmpresas(resultadoEvaluacionDeMetodologias.empresasQueNoCumplen),
+                nombresDeEmpresas(resultadoEvaluacionDeMetodologias.empresasSinDatos)
         )
     }
 
@@ -39,7 +45,7 @@ class MetodologiaController(@Autowired val metodologiaRepository: MetodologiaRep
 
 }
 
-data class ResultadoEvaluacionDeMetodologias(val nombreMetodologia: String,
-                                             val empresasOrdenadas: List<String>,
-                                             val empresasQueNoCumplen: List<String>,
-                                             val empresasSinDatos: List<String>)
+data class ResultadoEvaluacionDeMetodologiasTO(val nombreMetodologia: String,
+                                               val empresasOrdenadas: List<String>,
+                                               val empresasQueNoCumplen: List<String>,
+                                               val empresasSinDatos: List<String>)

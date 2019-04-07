@@ -20,45 +20,33 @@ class Metodologia(val nombre: String) {
     @JoinColumn(name = "metodologia_id")
     private val condicionesPrioritarias: MutableList<CondicionPrioritaria> = ArrayList()
 
-    fun evaluarPara(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
-        val empresasQueCumplenTaxativas = empresasQueCumplenTaxativas(empresasSinDatosFaltantes(empresas, anioActual), anioActual)
-        return empresasQueCumplenTaxativas.sortedWith(Comparator{ emp1, emp2 ->
-                    puntaje(emp2, empresasQueCumplenTaxativas, anioActual).compareTo(
-                            puntaje(emp1, empresasQueCumplenTaxativas, anioActual))
-                })
+    fun resultadoPara(empresas: List<Empresa>, anioActual: Int): ResultadoEvaluacionDeMetodologias {
+        val (empresasSinDatosFaltantes, empresasConDatosFaltantes) = empresas.partition { tieneDatosParaEvaluarTodasLasCondiciones(it, anioActual) }
+        val (empresasQueCumplenTaxativas, empresasQueNoCumplenTaxativas) = empresasSinDatosFaltantes.partition { cumpleCondicionesTaxativas(it, anioActual) }
+        val empresasOrdenadas = ordenarPorPrioridad(empresasQueCumplenTaxativas, anioActual)
+        return ResultadoEvaluacionDeMetodologias(nombre, empresasOrdenadas, empresasQueNoCumplenTaxativas, empresasConDatosFaltantes);
     }
 
-    fun empresasQueNoCumplenTaxativas(empresas: List<Empresa>, anioActual: Int): List<Empresa> { //Devuelve sólo las que no cumplen (no las que faltan datos)
-        return empresasSinDatosFaltantes(empresas, anioActual).filter { empresa -> !cumpleCondicionesTaxativas(empresa, anioActual) }
-    }
+    fun evaluarPara(empresas: List<Empresa>, anioActual: Int) = resultadoPara(empresas, anioActual).empresasOrdenadas
+    fun empresasQueNoCumplenTaxativas(empresas: List<Empresa>, anioActual: Int) = resultadoPara(empresas, anioActual).empresasQueNoCumplen
+    fun empresasConDatosFaltantes(empresas: List<Empresa>, anioActual: Int) = resultadoPara(empresas, anioActual).empresasSinDatos
 
-    fun empresasConDatosFaltantes(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
-        val condiciones = obtenerTodasLasCondiciones()
-        return empresasConDatosInsuficientesParaLasCondiciones(empresas, condiciones, anioActual)
-    }
-
-    private fun empresasSinDatosFaltantes(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
-        return empresas.filter { empresa -> !empresasConDatosFaltantes(empresas, anioActual).contains(empresa) }
-    }
-
-    private fun empresasQueCumplenTaxativas(empresas: List<Empresa>, anioActual: Int): List<Empresa> {
-        return empresas.filter { empresa -> !empresasQueNoCumplenTaxativas(empresas, anioActual).contains(empresa) }
-    }
-
-    private fun obtenerTodasLasCondiciones(): List<Condicion> = condicionesTaxativas.plus(condicionesPrioritarias)
-
-    private fun empresasConDatosInsuficientesParaLasCondiciones(empresas: List<Empresa>, condiciones: List<Condicion>, anioActual: Int): List<Empresa> {
-        return condiciones.flatMap { cond -> empresasConDatosFaltantesParaEstaCondicion(empresas, cond, anioActual) }
-                .distinct()
-    }
-
-    private fun empresasConDatosFaltantesParaEstaCondicion(empresas: List<Empresa>, condicion: Condicion, anioActual: Int): List<Empresa> {
-        return empresas.filter { emp -> !condicion.operando.sePuedeEvaluarPara(emp, anioActual) }
+    private fun tieneDatosParaEvaluarTodasLasCondiciones(empresa: Empresa, anioActual: Int): Boolean {
+        return todasLasCondiciones().all { it.sePuedeEvaluarPara(empresa, anioActual) }
     }
 
     private fun cumpleCondicionesTaxativas(empr: Empresa, anioActual: Int): Boolean {
         return condicionesTaxativas.all { it.laCumple(empr, anioActual) }
     }
+
+    private fun ordenarPorPrioridad(empresasQueCumplenTaxativas: List<Empresa>, anioActual: Int): List<Empresa> {
+        return empresasQueCumplenTaxativas.sortedWith(Comparator { emp1, emp2 ->
+            puntaje(emp2, empresasQueCumplenTaxativas, anioActual).compareTo(
+                    puntaje(emp1, empresasQueCumplenTaxativas, anioActual))
+        })
+    }
+
+    private fun todasLasCondiciones() = condicionesTaxativas.plus(condicionesPrioritarias)
 
     private fun puntaje(empresa: Empresa, empresas: List<Empresa>, anioActual: Int): Int {
         return condicionesPrioritarias.map { cond -> puntosObtenidosPara(empresa, cond, empresas, anioActual) }
@@ -93,3 +81,8 @@ class Metodologia(val nombre: String) {
     override fun toString(): String = nombre
 
 }
+
+data class ResultadoEvaluacionDeMetodologias(val nombreMetodologia: String,
+                                             val empresasOrdenadas: List<Empresa>,
+                                             val empresasQueNoCumplen: List<Empresa>,
+                                             val empresasSinDatos: List<Empresa>)

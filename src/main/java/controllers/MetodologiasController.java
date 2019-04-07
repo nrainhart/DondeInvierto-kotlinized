@@ -1,6 +1,7 @@
 package controllers;
 
 import dondeInvierto.dominio.empresas.Empresa;
+import dondeInvierto.dominio.metodologias.ResultadoEvaluacionDeMetodologias;
 import repo.RepositorioEmpresas;
 import dondeInvierto.dominio.metodologias.Metodologia;
 import repo.RepositorioUsuarios;
@@ -28,9 +29,10 @@ public class MetodologiasController{
 		Metodologia metodologiaAEvaluar = usuarioActivo.obtenerMetodologiaPorId(Long.parseLong(req.params("id")));
 		List<Empresa> empresas = new RepositorioEmpresas().obtenerTodos();
 		int anioActual = LocalDate.now().getYear();
-		model.put("empresasOrdenadas",nombresDeEmpresas(metodologiaAEvaluar.evaluarPara(empresas, anioActual)));
-		model.put("empresasQueNoCumplen",nombresDeEmpresas(metodologiaAEvaluar.empresasQueNoCumplenTaxativas(empresas, anioActual)));
-		model.put("empresasSinDatos",nombresDeEmpresas(metodologiaAEvaluar.empresasConDatosFaltantes(empresas, anioActual)));
+		ResultadoEvaluacionDeMetodologias resultadoEvaluacionDeMetodologias = metodologiaAEvaluar.resultadoPara(empresas, anioActual);
+		model.put("empresasOrdenadas",nombresDeEmpresas(resultadoEvaluacionDeMetodologias.getEmpresasOrdenadas()));
+		model.put("empresasQueNoCumplen",nombresDeEmpresas(resultadoEvaluacionDeMetodologias.getEmpresasQueNoCumplen()));
+		model.put("empresasSinDatos",nombresDeEmpresas(resultadoEvaluacionDeMetodologias.getEmpresasSinDatos()));
 		model.put("nombreMetodologia", metodologiaAEvaluar.getNombre());
 		return new ModelAndView(model, "metodologias/metodologiaEvaluada.hbs");
 	}
