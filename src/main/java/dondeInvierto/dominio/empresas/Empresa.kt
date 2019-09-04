@@ -63,7 +63,7 @@ class Empresa(val nombre: String,
         return cuentas.firstOrNull { cuenta -> cuenta.esDeTipo(tipoCuenta) && cuenta.esDeAnio(anio) }
                 //El first podría enmascarar el caso erróneo en el que haya dos cuentas del mismo tipo con valores distintos en el mismo año
                 ?.valor
-                ?: throw NoExisteCuentaError("No se pudo encontrar la cuenta " + tipoCuenta + " en el año " + anio + " para la empresa " + this.nombre + ".")
+                ?: throw NoExisteCuentaError("No se pudo encontrar la cuenta $tipoCuenta en el año $anio para la empresa ${this.nombre}.")
     }
 
     override fun equals(other: Any?): Boolean = other is Empresa && this.seLlama(other.nombre)
