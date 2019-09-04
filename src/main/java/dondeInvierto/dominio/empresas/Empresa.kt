@@ -1,20 +1,12 @@
 package dondeInvierto.dominio.empresas
 
-    import excepciones.NoExisteCuentaError
-    import java.time.Year
+import excepciones.NoExisteCuentaError
+import java.time.Year
 
-    class Empresa {
-
-        val nombre: String
-        private val cuentas: MutableList<Cuenta>
-
-        constructor(nombre: String, cuentas: MutableList<Cuenta>) {
-            this.nombre = nombre
-            this.cuentas = cuentas
-        }
+    class Empresa(val nombre: String, private val cuentas: MutableList<Cuenta>) {
 
         fun registrarCuenta(cuenta: Cuenta) {
-            cuenta.actualizar(6)
+            cuenta.valor
             cuentas.add(cuenta)
         }
 
