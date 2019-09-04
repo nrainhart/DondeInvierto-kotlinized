@@ -60,7 +60,7 @@ class Empresa(val nombre: String,
     fun getCuentas(): List<Cuenta> = cuentas
 
     fun getValorCuenta(tipoCuenta: String, anio: Year): Int {
-        return cuentas.firstOrNull { cuenta -> cuenta.esDeTipo(tipoCuenta) && cuenta.esDeAnio(anio) }
+        return cuentas.firstOrNull { cuenta -> cuenta.esDeTipoYAnio(tipoCuenta, anio) }
                 //El first podría enmascarar el caso erróneo en el que haya dos cuentas del mismo tipo con valores distintos en el mismo año
                 ?.valor
                 ?: throw NoExisteCuentaError("No se pudo encontrar la cuenta $tipoCuenta en el año $anio para la empresa ${this.nombre}.")

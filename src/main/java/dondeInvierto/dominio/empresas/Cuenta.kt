@@ -22,9 +22,12 @@ class Cuenta(val anio: Year, val tipoCuenta: String, valor: Int) {
         valor = cuentaConDatosNuevos.valor
     }
 
-    fun esDeTipo(tipo: String): Boolean = this.tipoCuenta.equals(tipo, ignoreCase = true)
+    fun esDeTipoYAnio(tipoCuenta: String, anio: Year) =
+      esDeTipo(tipoCuenta) && esDeAnio(anio)
 
-    fun esDeAnio(anio: Year): Boolean = this.anio == anio
+    private fun esDeTipo(tipo: String): Boolean = this.tipoCuenta.equals(tipo, ignoreCase = true)
+
+    private fun esDeAnio(anio: Year): Boolean = this.anio == anio
 
     override fun equals(other: Any?): Boolean {
         return other is Cuenta &&
