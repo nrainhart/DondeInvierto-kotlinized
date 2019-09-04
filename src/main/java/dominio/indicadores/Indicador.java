@@ -44,6 +44,7 @@ public class Indicador extends Cuantificador implements WithGlobalEntityManager,
 	}
 	
 	public boolean esAplicableA(Empresa empresa, Year anio){
+		int a = empresa.anioDeCreacion();
 		try{
 			this.evaluarEn(empresa, anio);
 			return true;
